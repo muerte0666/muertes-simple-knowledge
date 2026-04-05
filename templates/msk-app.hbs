@@ -1,0 +1,376 @@
+<section class="msk-shell">
+  <header class="msk-header">
+    <div class="msk-title">
+      <i class="fa-solid fa-book-open"></i>
+      <h1>Muerte's Simple Knowledge v{{moduleVersion}}</h1>
+    </div>
+
+     <div class="msk-header-spacer"></div>
+
+    {{#if isGMOriginal}}
+      <div class="msk-add">
+        <label>Tab</label>
+        <input type="text" name="newTabName" placeholder="e.g. Library, Dungeon" />
+        <button type="button" class="msk-mini msk-addPlus" data-action="add-tab" title="Add Tab"><i class="fa-solid fa-plus"></i></button>
+
+        {{#if isGM}}
+          <button type="button" class="msk-iconBtn" data-action="json-tools" title="JSON Import / Export">
+            <i class="fa-solid fa-code"></i>
+          </button>
+        {{/if}}
+
+        <button type="button" class="msk-iconBtn" data-action="toggle-gm-view-as-player" title="GM: View as Player">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        {{#if isGM}}
+          {{#if canForce}}
+            <button type="button" class="msk-iconBtn" data-action="open-for-players" title="Open for All Players">
+              <i class="fa-solid fa-users"></i>
+            </button>
+          {{/if}}
+        {{/if}}
+      </div>
+    {{/if}}
+  </header>
+
+  <nav class="msk-tabs" aria-label="Knowledge Tabs">
+    <button type="button"
+            class="msk-tab {{#if selectedTabIsHome}}active{{/if}}"
+            data-action="select-home">
+      <i class="fa-solid fa-house"></i>
+      <span class="msk-tabLabel">Home</span>
+    </button>
+
+    {{#each tabs as |t|}}
+      <button type="button"
+              class="msk-tab {{#if (eq ../selectedTab.id t.id)}}active{{/if}} {{#unless t.tabSettings.showToPlayers}}msk-unshared{{/unless}}"
+              data-action="select-tab" data-tab-id="{{t.id}}">
+        <i class="fa-solid fa-folder"></i>
+        <span class="msk-tabLabel">{{t.name}}</span>
+</button>
+    {{/each}}
+  </nav>
+
+  <section class="msk-body msk-chase msk-paneFrame">
+    {{#if emptyTabs}}
+      <div class="msk-overview">
+        <p>No tabs yet. {{#if isGM}}Add a tab above.{{else}}Ask the GM to reveal a tab.{{/if}}</p>
+      </div>
+    {{else}}
+
+      {{#if selectedTabIsHome}}
+        <div class="msk-home">
+          <div class="msk-homeHeader">
+            <h2 class="msk-homeTitle">Muerte's Simple Knowledge</h2>
+            <div class="msk-homeMeta">v{{moduleVersion}}</div>
+          </div>
+
+          <div class="msk-homeBody">
+            <p class="msk-homeTagline">A streamlined knowledge encounter framework for Pathfinder 2e in Foundry VTT.</p>
+
+            <div class="msk-homeSection">
+              <h3>Purpose</h3>
+              <p>Run structured knowledge challenges, research tasks, and skill-based discovery without slowing down play.</p>
+            </div>
+
+            <div class="msk-homeSection">
+              <h3>Highlights</h3>
+              <ul class="msk-homeList">
+                <li><strong>Structured encounters:</strong> organize knowledge scenes into tabs and encounters.</li>
+                <li><strong>One-click rolls:</strong> post an encounter to chat and roll directly from the card.</li>
+                <li><strong>Adjustable difficulty:</strong> apply tab-level DC adjustments to scale on the fly.</li>
+                <li><strong>Clear outcomes:</strong> define CS / S / F / CF results with optional GM-only notes.</li>
+                <li><strong>Visibility control:</strong> reveal encounters when you want—keep prep hidden.</li>
+                <li><strong>Easy backup:</strong> GM-only JSON import/export for tabs or full sets.</li>
+              </ul>
+            </div>
+
+            <div class="msk-homeSection">
+              <h3>Created by Muerte</h3>
+              <div class="msk-homeAuthor">
+                <div>Professional GM • PF2e Specialist • Foundry Module Developer • USMC Veteran</div>
+
+                <div class="msk-homeButtons">
+                  <a class="msk-homeBtn" href="https://startplaying.games/gm/muerte" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-dice-d20"></i>
+                    <span>StartPlaying Profile</span>
+                  </a>
+
+                  <a class="msk-homeBtn" href="https://www.patreon.com/c/Muerte0666" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-patreon"></i>
+                    <span>Join my Patreon</span>
+                  </a>
+
+                  <a class="msk-homeBtn" href="https://startplaying.games/referral/ckvmxy89f37xlbopkh3e7e0lo" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-tag"></i>
+                    <span>Get $10 Discount</span>
+                  </a>
+
+                  <a class="msk-homeBtn" href="https://discord.gg/e3HCrdY5XN" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-discord"></i>
+                    <span>Discord Community</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="msk-homeSection msk-homeFinePrint">
+              <p>Built for live sessions: clean UI, fast rolls, and stable player-safe interaction.</p>
+            </div>
+          </div>
+        </div>
+
+      {{else if selectedTab}}
+        <div class="msk-chase-topRow">
+          <div class="msk-add msk-tabEditRow">
+            {{#if isGM}}
+              <label>Tab Name</label>
+              <input type="text" name="tabName" value="{{selectedTab.name}}" data-action="edit-tab-name" data-tab-id="{{selectedTab.id}}" />
+
+              <label>Title</label>
+              <input type="text" name="tabTitle" value="{{selectedTab.title}}" data-action="edit-tab-title" data-tab-id="{{selectedTab.id}}" />
+            {{else}}
+              <strong>{{selectedTab.name}}{{#if selectedTab.title}} - {{selectedTab.title}}{{/if}}</strong>
+            {{/if}}
+
+            {{#if isGM}}
+              <label>Adjust DC</label>
+              <input type="number" name="tabDcAdjust" value="{{tabDcAdjust}}" style="width:64px;" />
+              <button type="button" class="msk-iconBtn" data-action="reset-tab-dc" title="Reset DC Adjust">
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+
+              <div class="msk-spacer"></div>
+
+              <div class="msk-topRightTools">
+                <button type="button" class="msk-mini msk-addPlus" data-action="add-encounter" title="Add Knowledge">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" class="msk-iconBtn msk-eyeBtn {{#if selectedTab.tabSettings.showToPlayers}}msk-shared{{else}}msk-unshared{{/if}}" data-action="toggle-selected-tab-eye"
+                        title="{{#if selectedTab.tabSettings.showToPlayers}}Hide Tab from Players{{else}}Show Tab to Players{{/if}}">
+                  <i class="fa-solid {{#if selectedTab.tabSettings.showToPlayers}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+                </button>
+                <button type="button" class="msk-iconBtn msk-trashBtn" data-action="delete-tab" title="Delete Tab">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+
+            {{/if}}
+          </div>
+
+        </div>
+
+        <div class="msk-grid">
+          <aside class="msk-left">
+            <h3 class="msk-chase-sectionTitle">Knowledge</h3>
+
+            <div class="msk-encList">
+              {{#each encounters as |e|}}
+                <div class="msk-encRow {{#if (eq ../selectedEncounter.id e.id)}}is-active{{/if}} {{#unless e.encounterSettings.showToPlayers}}msk-unshared{{/unless}}"
+                     data-action="select-encounter" data-encounter-id="{{e.id}}">
+                  <div class="msk-encTitle">{{e.title}}</div>
+
+                  {{#if ../isGM}}
+                    <div class="msk-encTools">
+                      <button type="button" class="msk-iconBtn msk-eyeBtn {{#if e.encounterSettings.showToPlayers}}msk-shared{{else}}msk-unshared{{/if}}" data-action="toggle-encounter-eye" data-encounter-id="{{e.id}}"
+                              title="{{#if e.encounterSettings.showToPlayers}}Hide Encounter from Players{{else}}Show Encounter to Players{{/if}}">
+                        <i class="fa-solid {{#if e.encounterSettings.showToPlayers}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+                      </button>
+                      <button type="button" class="msk-iconBtn msk-trashBtn" data-action="delete-encounter" data-encounter-id="{{e.id}}" title="Delete Knowledge">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  {{/if}}
+                </div>
+              {{/each}}
+            </div>
+          </aside>
+
+          <main class="msk-right">
+            {{#if emptyEncounters}}
+              <div class="msk-overview">
+                <p>No knowledge entries are visible in this tab.</p>
+              </div>
+            {{else if selectedEncounter}}
+              <div class="msk-knowledgePanel">
+              <div class="msk-chase-titleBox">
+                <div class="msk-encHeader">
+                  {{#if isGM}}
+                    <input type="text" name="encounterTitle" value="{{selectedEncounter.title}}" data-action="edit-encounter-title" />
+                  {{else}}
+                    <div class="msk-chase-titleRead">{{selectedEncounter.title}}</div>
+                  {{/if}}
+
+                  {{#if isGM}}
+                    <div class="msk-encHeaderTools">
+                      <button type="button" class="msk-iconBtn msk-sendBtn" data-action="send-to-chat" title="Send to Chat">
+                        <i class="fa-solid fa-comment-dots"></i>
+                      </button>
+                      <button type="button" class="msk-iconBtn msk-trashBtn" data-action="delete-encounter" data-encounter-id="{{selectedEncounter.id}}" title="Delete Knowledge">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  {{/if}}
+                </div>
+
+                {{#if showDesc}}
+                  <div class="msk-chase-notesBox">
+                    {{#if isGM}}
+                      <div class="msk-descRow">
+                        <label>Description</label>
+                        <label class="msk-includeDesc" title="Include Description on Chat Card">
+                          <input type="checkbox" name="includeDesc" {{#if includeDescDefault}}checked{{/if}} />
+                          <span>Desc</span>
+                        </label>
+                      </div>
+                      <textarea name="encounterDescription" data-action="edit-encounter-description">{{selectedEncounter.descriptionHtml}}</textarea>
+                    {{else}}
+                      <div class="msk-chase-notesRead">{{{description}}}</div>
+                    {{/if}}
+                  </div>
+                {{/if}}
+              </div>
+
+              
+              <div class="msk-checks">
+                <div class="msk-checksHeader">
+                  <h3 class="msk-chase-sectionTitle">Checks</h3>
+                  <span class="msk-muted">Add checks players can roll. All checks use the shared Results below.</span>
+                </div>
+
+                {{#if isGM}}
+                  <div class="msk-checkBuilder msk-checkBuilder" data-msk-check-builder>
+                    <select data-role="msk-type" class="msk-checkTypeSel" title="Check Type">
+                      <option value="skill">Skill</option>
+                      <option value="save">Save</option>
+                      <option value="lore">Lore</option>
+                    </select>
+
+                    <select data-role="msk-skill" class="msk-checkSkillSel" title="Skill">
+                      {{#each skillOptions as |s|}}
+                        <option value="{{s.slug}}">{{s.label}}</option>
+                      {{/each}}
+                    </select>
+
+                    <select data-role="msk-save" class="msk-checkSaveSel" title="Save">
+                      {{#each saveOptions as |s|}}
+                        <option value="{{s.slug}}">{{s.label}}</option>
+                      {{/each}}
+                    </select>
+
+                    <input type="text" class="msk-checkLoreInput" data-role="msk-lore" placeholder="Lore name" />
+
+                    <input class="msk-dcTiny" type="number" placeholder="DC" data-role="msk-dc" />
+
+                    <input type="text" placeholder="Description (optional)" data-role="msk-desc" />
+
+                    <label class="msk-checkVisibilityToggle" title="Show Check to Players">
+                      <input type="checkbox" data-role="msk-show-to-players" checked />
+                      <i class="fa-solid fa-eye"></i>
+                    </label>
+
+                    <button type="button" class="msk-mini msk-addPlus"
+                            title="Add Check"
+                            data-action="add-check-from-builder">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                {{/if}}
+
+                <div class="msk-checkList msk-chase-checkList">
+                  {{#each checks as |c|}}
+                    {{#if (or ../isGM c.checkSettings.showToPlayers)}}
+                      <div class="msk-chase-checkCard {{#unless c.checkSettings.showToPlayers}}msk-unshared{{/unless}}">
+                        <div class="msk-chase-checkRow msk-checkRowInline">
+                          <button type="button"
+                                  class="msk-skillBtn msk-chase-checkBtn msk-checkPill"
+                                  data-action="player-roll"
+                                  data-check-id="{{c.id}}">
+                            <i class="fa-solid fa-dice-d20"></i>
+                            {{c.checkTypeLabel}}{{#if ../isGM}} (DC {{c.effectiveDc}}){{/if}}
+                          </button>
+
+                          {{#if ../isGM}}
+                            <input type="text"
+                                   class="msk-checkDescInline"
+                                   value="{{c.description}}"
+                                   placeholder="Description (optional)"
+                                   data-action="edit-check-desc"
+                                   data-check-id="{{c.id}}" />
+                            <button type="button"
+                                    class="msk-iconBtn msk-eyeBtn msk-miniIcon {{#if c.checkSettings.showToPlayers}}msk-shared{{else}}msk-unshared{{/if}}"
+                                    title="{{#if c.checkSettings.showToPlayers}}Hide Check from Players{{else}}Show Check to Players{{/if}}"
+                                    data-action="toggle-check-eye"
+                                    data-check-id="{{c.id}}">
+                              <i class="fa-solid {{#if c.checkSettings.showToPlayers}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+                            </button>
+                            <button type="button"
+                                    class="msk-iconBtn msk-trashBtn msk-miniIcon"
+                                    title="Remove Check"
+                                    data-action="delete-check"
+                                    data-check-id="{{c.id}}">
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                          {{else}}
+                            {{#if c.description}}
+                              <div class="msk-checkDescTextInline">{{c.description}}</div>
+                            {{/if}}
+                          {{/if}}
+                        </div>
+                      </div>
+                    {{/if}}
+                  {{/each}}
+                </div>
+              </div>
+
+                    {{#if isGM}}
+<div class="msk-resultsHeader">
+                      <h3 class="msk-chase-sectionTitle">Results</h3>
+                      <span class="msk-muted">One set of results used for all checks in this encounter.</span>
+                    </div>
+                    <div class="msk-resultsGrid">
+                      <div>
+                        <label class="msk-muted" style="display:block; margin:4px 0;">Critical Success</label>
+                        {{#if isGM}}
+                          <textarea class="msk-fullWidth" rows="2" data-action="edit-encounter-result" data-result-key="criticalSuccessHtml">{{selectedEncounter.results.criticalSuccessHtml}}</textarea>
+                          <textarea class="msk-fullWidth msk-gmNote" rows="1" placeholder="GM Note (GM-only, shown in chat in italics)" data-action="edit-encounter-result" data-result-key="criticalSuccessGmNoteHtml">{{selectedEncounter.results.criticalSuccessGmNoteHtml}}</textarea>
+                        {{/if}}
+                      </div>
+                      <div>
+                        <label class="msk-muted" style="display:block; margin:4px 0;">Success</label>
+                        {{#if isGM}}
+                          <textarea class="msk-fullWidth" rows="2" data-action="edit-encounter-result" data-result-key="successHtml">{{selectedEncounter.results.successHtml}}</textarea>
+                          <textarea class="msk-fullWidth msk-gmNote" rows="1" placeholder="GM Note (GM-only, shown in chat in italics)" data-action="edit-encounter-result" data-result-key="successGmNoteHtml">{{selectedEncounter.results.successGmNoteHtml}}</textarea>
+                        {{/if}}
+                      </div>
+                      <div>
+                        <label class="msk-muted" style="display:block; margin:4px 0;">Failure</label>
+                        {{#if isGM}}
+                          <textarea class="msk-fullWidth" rows="2" data-action="edit-encounter-result" data-result-key="failureHtml">{{selectedEncounter.results.failureHtml}}</textarea>
+                          <textarea class="msk-fullWidth msk-gmNote" rows="1" placeholder="GM Note (GM-only, shown in chat in italics)" data-action="edit-encounter-result" data-result-key="failureGmNoteHtml">{{selectedEncounter.results.failureGmNoteHtml}}</textarea>
+                        {{/if}}
+                      </div>
+                      <div>
+                        <label class="msk-muted" style="display:block; margin:4px 0;">Critical Failure</label>
+                        {{#if isGM}}
+                          <textarea class="msk-fullWidth" rows="2" data-action="edit-encounter-result" data-result-key="criticalFailureHtml">{{selectedEncounter.results.criticalFailureHtml}}</textarea>
+                          <textarea class="msk-fullWidth msk-gmNote" rows="1" placeholder="GM Note (GM-only, shown in chat in italics)" data-action="edit-encounter-result" data-result-key="criticalFailureGmNoteHtml">{{selectedEncounter.results.criticalFailureGmNoteHtml}}</textarea>
+                        {{/if}}
+                      </div>
+                    
+{{/if}}
+</div>
+                  </div>
+                {{/if}}
+              </div>
+              </div>
+</main>
+        </div>
+
+      {{/if}}
+    {{/if}}
+  </section>
+</section>
+{{!-- MSK TEMPLATE END --}}

@@ -1,0 +1,30 @@
+<div class="msk-chat-card" style="--msk-card-accent: {{chatAccent}}; --msk-card-fill: {{chatFillColor}}; --msk-card-fill-alpha: {{chatFill}};" data-msk-card="encounter">
+  <div class="msk-chat-header">
+    <span class="msk-badge">MSK</span>
+    <h3 class="msk-chat-title">{{title}}</h3>
+  </div>
+
+  {{#if includeDescription}}
+    <div class="msk-chat-desc">{{{description}}}</div>
+  {{/if}}
+
+  <div class="msk-chat-checks">
+    {{#each checks as |c|}}
+      <button
+        type="button"
+        class="msk-roll-btn"
+        data-msk-v="{{../contractV}}"
+        data-msk-tab-id="{{../tabId}}"
+        data-msk-encounter-id="{{../encounterId}}"
+        data-msk-check-id="{{c.id}}"
+      >
+        <span class="msk-btn-line">
+          <span class="msk-btn-text">{{c.label}}</span>
+          {{#if c.showDC}}
+            <span class="msk-btn-dc">(DC {{c.dc}})</span>
+          {{/if}}
+        </span>
+      </button>
+    {{/each}}
+  </div>
+</div>

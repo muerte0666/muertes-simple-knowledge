@@ -1,0 +1,938 @@
+/* MSK minimal overrides + Journal button styling */
+#msk-app .window-content,
+.app.window-app#msk-app .window-content{
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.92);
+  /* Prevent any 1–2px overflow from creating a horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+/* Consistent width math: borders/padding should not push past 100% */
+#msk-app,
+#msk-app *{
+  box-sizing: border-box;
+}
+
+/* Keep form controls readable (white bg / black text) */
+#msk-app input,
+#msk-app select,
+#msk-app textarea{
+  background: rgba(255,255,255,.92);
+  color: rgba(0,0,0,.92);
+  border: 1px solid rgba(0,0,0,.35);
+}
+#msk-app select option{
+  background: rgba(255,255,255,.98);
+  color: rgba(0,0,0,.95);
+}
+#msk-app input::placeholder{color: rgba(0,0,0,.55);}
+
+/* Journal footer button: Quest Tracker family treatment */
+.msk-open-log{
+  width:100%;
+  padding:6px 10px;
+  border:1px solid rgba(255,140,26,0.62) !important;
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(255,140,26,0.22), rgba(255,140,26,0.12)) !important;
+  color:rgba(255,229,198,0.98) !important;
+  cursor:pointer;
+}
+
+.msk-open-log:hover,
+.msk-open-log:focus{
+  border-color:rgba(77,179,255,0.72) !important;
+  background:linear-gradient(180deg, rgba(77,179,255,0.22), rgba(77,179,255,0.12)) !important;
+  color:rgba(216,238,255,0.98) !important;
+  box-shadow:0 0 12px rgba(77,179,255,0.22) !important;
+}
+
+.msk-open-log[disabled]{
+  opacity:1;
+  cursor:default;
+}
+
+.msk-open-log i{margin-right:6px;color:inherit}
+
+/* MSK layout helpers to match MSK Chase density */
+.msk-grid{
+  display:grid;
+  /* Allow the right pane to shrink without forcing overflow */
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 12px;
+  align-items:start;
+}
+
+/* Grid children must be allowed to shrink */
+.msk-left,
+.msk-right,
+.msk-rightWrap{min-width:0;}
+
+/* JSON Tools Dialog */
+.msk-json-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msk-json-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.msk-json-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.msk-muted {
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+.msk-json-grid {
+  display: grid;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------------------
+   Chat card visibility
+   ------------------------------------------------------------------ */
+
+/* Foundry renders chat card HTML once and broadcasts it. We keep a single
+   card and hide GM-only fragments per-client. */
+body:not(.msk-user-is-gm) .gm-only {
+  display: none !important;
+}
+
+.msk-json-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.msk-json-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.msk-json-btn {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.25);
+  color: rgba(255,255,255,0.92);
+}
+
+.msk-json-btn-export { border-color: rgba(120, 255, 120, 0.75); }
+.msk-json-btn-import { border-color: rgba(120, 170, 255, 0.85); }
+
+.msk-json-text {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.22);
+  padding: 10px;
+  min-height: 300px;
+  color: rgba(255,255,255,0.92);
+}
+
+.msk-json-help {
+  opacity: 0.85;
+  border-left: 4px solid rgba(255, 200, 120, 0.85);
+  padding-left: 10px;
+}
+
+.msk-left{
+  border:2px solid rgba(255,255,255,.25);
+  border-radius:12px;
+  padding:10px;
+  background: rgba(0,0,0,.12);
+}
+
+.msk-encList{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.msk-encRow{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;
+  padding:8px 10px;
+  cursor:pointer;
+  background: rgba(0,0,0,.12);
+}
+.msk-encRow.is-active{border-color: var(--msk-border-yellow);}
+.msk-encRow.msk-unshared{opacity:.6}
+
+.msk-encTitle{font-weight:700;font-size:12px;line-height:1.2;flex:1;min-width:0}
+.msk-encTitle{overflow:hidden;text-overflow:ellipsis;}
+.msk-encHeader{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.msk-encHeader input[type="text"]{flex:1;min-width:0}
+
+.msk-topRightTools{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.msk-descRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.msk-includeDesc{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  opacity:.9;
+  user-select:none;
+}
+.msk-includeDesc input{margin:0;}
+
+.msk-checks{margin-top:12px}
+.msk-checksHeader{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;gap:10px;margin-top:10px}
+.msk-checksHeader h3{margin:0}
+.msk-checksHeader .msk-muted{flex:1 1 320px;min-width:0}
+.msk-checkList{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+
+.msk-checkRow{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;
+  padding:8px 10px;
+  background: rgba(0,0,0,.12);
+}
+.msk-checkRow.msk-unshared{opacity:.6}
+.msk-checkRow input[type="text"]{min-width:180px;flex:1}
+.msk-checkRow select{min-width:110px}
+.msk-dcLabel{font-size:12px;opacity:.85;margin-left:4px}
+.msk-dcHint{font-weight:800;opacity:.85;margin-left:4px}
+.msk-resultBtns{display:flex;gap:6px;margin-left:auto}
+.msk-tabTools{margin-left:auto;display:flex;align-items:center}
+.msk-tab .msk-iconBtn{padding:2px 6px;height:22px}
+.msk-tab.msk-unshared{opacity:.7}
+
+
+/* Check rows (dense like MSK chase) */
+.msk-checkRow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px;
+  border-radius:10px;
+  background: rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.08);
+  margin:6px 0;
+}
+.msk-checkRow.msk-unshared{opacity:.65}
+.msk-checkLabel{flex:1; min-width:220px;}
+.msk-checkType{width:92px;}
+.msk-skillSlug{width:160px;}
+.msk-loreName{width:220px;}
+.msk-dcLabel{margin-left:auto; opacity:.8; font-size:12px;}
+.msk-dcInput{width:72px;}
+.msk-results{margin-top:12px;}
+.msk-resultsHeader{display:flex; align-items:baseline; gap:10px; margin:8px 0 6px;}
+
+/* MSK right-side unified panel (match MSK blue border container) */
+.msk-rightWrap{
+  border:2px solid var(--msk-border-blue);
+  border-radius:10px;
+  padding:10px 14px;
+}
+/* ensure MSK tab buttons are not forced full width */
+.msk-tabs .msk-tab{width:auto;}
+/* Hidden tab styling similar to MSK hidden sample */
+.msk-tab.msk-unshared{opacity:.55; filter:saturate(.75);}
+
+.msk-right{border:2px solid var(--msk-border-blue);border-radius:10px;padding:10px 14px;}
+
+.msk-addPlus{color:rgba(245,255,245,.95); background:rgba(0,128,0,.28);}
+.msk-addPlus:hover{background:rgba(0,128,0,.40);}
+
+/* Results grid similar to MSK infiltration blocks */
+.msk-resultsGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+@media (max-width: 900px){
+  .msk-resultsGrid{grid-template-columns:1fr;}
+}
+.msk-notesRead{
+  padding: 8px 10px;
+  border: 1px solid var(--msk-border);
+  border-radius: 8px;
+  background: rgba(0,0,0,.18);
+  min-height: 42px;
+  white-space: pre-wrap;
+}
+/* Builder type toggles (only one of skill/save/lore should take space) */
+.msk-checkBuilder .msk-checkSkillSel,
+.msk-checkBuilder .msk-checkSaveSel,
+.msk-checkBuilder .msk-checkLoreInput{display:none;}
+.msk-checkBuilder .msk-checkSkillSel{display:block;}
+.msk-checkBuilder.is-save .msk-checkSkillSel{display:none;}
+.msk-checkBuilder.is-save .msk-checkSaveSel{display:block;}
+.msk-checkBuilder.is-lore .msk-checkSkillSel,
+.msk-checkBuilder.is-lore .msk-checkSaveSel{display:none;}
+.msk-checkBuilder.is-lore .msk-checkLoreInput{display:block;}
+
+/* Ensure addPlus is visible */
+.msk-addPlus{color:rgba(245,255,245,.95); background:rgba(0,128,0,.34); border-color:rgba(0,128,0,.75);}
+.msk-addPlus:hover{background:rgba(0,128,0,.48);}
+
+/* --- Checks builder row (compact; no horizontal scroll by default) --- */
+.msk-checkBuilder{
+  display: grid;
+  /* Tight + predictable: keep DC close to the selector, description takes the rest */
+  grid-template-columns: 62px minmax(120px, 180px) 48px minmax(0, 1fr) 34px;
+  gap: 4px;
+  align-items: center;
+  margin: 6px 0 10px;
+  padding: 4px 6px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.msk-checkBuilder.is-lore{
+  grid-template-columns: 62px minmax(120px, 180px) 48px minmax(0, 1fr) 34px;
+}
+.msk-checkBuilder select,
+.msk-checkBuilder input{
+  height: 28px;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.msk-checkBuilder .msk-checkTypeSel,
+.msk-checkBuilder .msk-checkTypeSel select{
+  width: 100% !important;
+}
+.msk-checkBuilder button{
+  justify-self: end;
+}
+.msk-checkList .msk-chase-checkRow{
+  align-items:center;
+}
+.msk-checkList .msk-chase-checkBtns{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.msk-checkList .msk-chase-checkBtns .msk-mini{
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+/* === Chase parity tightening (0.2.6.4) === */
+.msk-checkRowTight{
+  align-items:flex-start;
+  gap:10px;
+}
+.msk-checkMainCol{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.msk-checkPill{
+  padding:6px 12px;
+  min-height:30px;
+}
+.msk-checkDescBelow{
+  width:100%;
+  height:28px;
+  padding:4px 8px;
+  border-radius:6px;
+}
+.msk-checkDescText{
+  font-size:12px;
+  opacity:.9;
+  padding:2px 2px 0 2px;
+}
+.msk-checkActionsCol{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:center;
+  margin-top:2px;
+}
+.msk-miniIcon{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Builder row: ensure the controls fully fill their grid cells */
+.msk-checkBuilder select,
+.msk-checkBuilder input{
+  width: 100%;
+}
+
+/* Tabs row: match msk-tabs density */
+.msk-tabs{
+  gap:10px;
+}
+.msk-tab{
+  padding:6px 12px;
+}
+
+/* === 0.2.6.5 button-row fix === */
+.msk-checkTopRow{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.msk-checkActionsRow{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+/* === 0.2.6.7 Check row inline layout === */
+.msk-checkRowInline{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.msk-checkDescInline{
+  flex:1;
+  min-width: 220px;
+  height:28px;
+  padding:4px 8px;
+  border-radius:6px;
+}
+
+/* GM note textarea styling */
+#msk-app textarea.msk-gmNote{
+  margin-top:6px;
+  font-style:italic;
+  opacity:.95;
+}
+
+/* Chat card styling */
+.msk-chat-card{
+  --msk-card-accent: var(--msk-border-yellow);
+  --msk-card-fill-alpha: 0.75;
+  border:2px solid var(--msk-card-accent);
+  border-radius:10px;
+  padding:10px;
+  background: var(--msk-card-fill, rgba(10,10,14,var(--msk-card-fill-alpha)));
+  /* Subsystem-style emphasis */
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.28),
+    0 0 14px var(--msk-card-accent);
+}
+.msk-chat-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.msk-badge{white-space:nowrap;display:inline-block;}
+.msk-chat-title{margin:0;font-size:14px;line-height:1.2;}
+.msk-chat-desc{margin:6px 0 10px 0;}
+.msk-chat-checks{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.msk-chat-checks .msk-roll-btn{
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,.25);
+  background:rgba(255,255,255,.96);
+  color:rgba(0,0,0,.92);
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.msk-chat-checks .msk-roll-btn:hover,
+.msk-chat-checks .msk-roll-btn:focus{
+  background:rgba(255,255,255,1);
+  color:rgba(0,0,0,.92);
+}
+.msk-chat-checks .msk-btn-text{
+  max-width: 70%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.msk-chat-checks .msk-btn-dc{
+  font-weight:800;
+  white-space:nowrap;
+}
+
+
+.msk-chat-checks .msk-check-dc{
+  font-weight:700;
+  opacity:.9;
+  white-space:nowrap;
+}
+@media (max-width: 420px){
+  .msk-chat-checks{grid-template-columns:1fr;}
+}
+
+/* Result card GM note */
+.msk-gm-footer .msk-gm-note{margin-top:6px;opacity:.9;}
+.msk-checkDescTextInline{
+  flex:1;
+  font-size:12px;
+  opacity:.9;
+  padding:2px 2px;
+}
+
+/* === 0.2.6.8 Hotfix: force check row to stay on ONE line === */
+.msk-chase-checkRow.msk-checkRowInline{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  gap:10px !important;
+  width:100%;
+}
+.msk-chase-checkRow.msk-checkRowInline > *{
+  flex:0 0 auto;
+}
+.msk-chase-checkRow.msk-checkRowInline .msk-checkPill{
+  flex:0 0 220px;
+  max-width:220px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.msk-chase-checkRow.msk-checkRowInline .msk-checkDescInline{
+  flex:1 1 auto !important;
+  min-width:240px;
+}
+.msk-chase-checkRow.msk-checkRowInline .msk-miniIcon{
+  flex:0 0 28px;
+}
+
+.msk-checkVisibilityToggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.04);
+  cursor:pointer;
+}
+.msk-checkVisibilityToggle input{
+  position:absolute;
+  width:1px !important;
+  height:1px !important;
+  opacity:0;
+  pointer-events:none;
+}
+.msk-checkVisibilityToggle i{ color:#2ecc71; }
+.msk-checkVisibilityToggle input:not(:checked) + i{ color:#e74c3c; }
+
+/* Chat button overflow handling */
+.msk-roll-btn{ align-items:center; }
+.msk-roll-btn .msk-check-label{
+  flex:1 1 auto;
+  min-width:0;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  line-height:1.15;
+}
+.msk-roll-btn .msk-check-dc{
+  flex:0 0 auto;
+  white-space:nowrap;
+  opacity:0.9;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Chat Cards */
+/* ------------------------------------------------------------------ */
+.msk-chat-card .msk-chat-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:6px;
+}
+.msk-chat-card .msk-badge{
+  font-weight:800;
+  font-size:11px;
+  padding:1px 6px;
+  border-radius:6px;
+  background: rgba(0,0,0,.12);
+  white-space: nowrap;
+}
+.msk-chat-card .msk-chat-title{
+  margin:0;
+  font-size:14px;
+  line-height:1.2;
+}
+.msk-chat-card .msk-chat-desc{
+  margin:6px 0 8px 0;
+}
+
+/* One-column button stack for better readability on narrow chat log */
+.msk-chat-checks{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+/* Ensure MSK chat buttons are ONE LINE: [Skill Name] [(DC XX)] */
+.msk-chat-checks .msk-roll-btn{
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.92);
+  text-align:center;
+  color: rgba(0,0,0,.92);
+}
+.msk-chat-checks .msk-roll-btn:hover,
+.msk-chat-checks .msk-roll-btn:focus{
+  color: rgba(0,0,0,.92);
+  background: rgba(255,255,255,1);
+}
+.msk-chat-checks .msk-roll-btn .msk-btn-text{
+  max-width: calc(100% - 86px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(0,0,0,.92);
+}
+.msk-chat-checks .msk-roll-btn .msk-btn-dc{
+  white-space: nowrap;
+  font-weight: 800;
+  color: rgba(0,0,0,.92);
+}
+
+/* Top-row right tool cluster spacing */
+.msk-spacer{ flex: 1 1 auto; }
+.msk-topRightTools{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Result card spacing + smaller title */
+.msk-result-card{
+  --msk-card-accent: var(--msk-border-yellow);
+  --msk-card-fill-alpha: 0.75;
+  border:2px solid var(--msk-card-accent);
+  border-radius:10px;
+  padding:10px;
+  background: var(--msk-card-fill, rgba(10,10,14,var(--msk-card-fill-alpha)));
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.28),
+    0 0 14px var(--msk-card-accent);
+}
+.msk-result-card .msk-result-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 0 0 0;
+  margin:0 0 6px 0;
+}
+.msk-result-card .msk-result-title{
+  margin:0;
+  font-size:14px;
+  line-height:1.2;
+}
+.msk-result-card .msk-result-body{
+  margin:0;
+}
+.msk-result-card .msk-result-gmnote{
+  margin-top:6px;
+  opacity:.85;
+}
+
+
+
+/* Icon buttons: subsystem-style */
+.msk-eyeBtn {
+  background: transparent !important;
+  border: none !important;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.msk-eyeBtn.msk-shared i { color: #2ecc71; } /* green */
+.msk-eyeBtn.msk-unshared i { color: #e74c3c; }  /* red */
+
+.msk-trashBtn {
+  background: transparent !important;
+  border: 1px solid #e74c3c !important;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.msk-trashBtn i { color: rgba(255,255,255,.95); }
+
+/* Send-to-chat icon (subsystem-style: light blue border, no fill) */
+.msk-sendBtn{
+  background: transparent !important;
+  border: 1px solid rgba(100,190,255,.95) !important;
+}
+.msk-sendBtn i{ color: rgba(100,190,255,.98); }
+
+/* Home tab */
+.msk-home{
+  border:2px solid var(--msk-border-blue);
+  border-radius:12px;
+  padding:12px 14px;
+  background: rgba(0,0,0,.12);
+}
+.msk-homeHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.msk-homeTitle{margin:0;font-size:18px;}
+.msk-homeEdit{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.msk-homeBody{margin-top:10px;}
+
+.msk-homeMeta{opacity:.9;font-size:12px;white-space:nowrap;}
+.msk-homeTagline{margin:0 0 12px 0;opacity:.95;}
+.msk-homeSection{border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:10px 12px;margin:10px 0;}
+.msk-homeSection h3{margin:0 0 6px 0;font-size:14px;}
+.msk-homeList{margin:0;padding-left:18px;}
+.msk-homeList li{margin:4px 0;}
+.msk-homeButtons{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+#msk-app .msk-homeBtn,
+.msk-homeBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 10px;
+  border-radius:999px;
+  text-decoration:none;
+  white-space:nowrap;
+  border:1px solid rgba(255,140,26,0.82) !important;
+  background:rgba(255,140,26,0.08) !important;
+  color:#ff9b2f !important;
+  box-shadow:none;
+}
+
+#msk-app .msk-homeBtn i,
+.msk-homeBtn i{
+  color:inherit;
+  opacity:1;
+}
+
+#msk-app .msk-homeBtn:hover,
+#msk-app .msk-homeBtn:focus,
+.msk-homeBtn:hover,
+.msk-homeBtn:focus{
+  background:rgba(77,179,255,0.14) !important;
+  border-color:rgba(77,179,255,0.82) !important;
+  color:#bfe4ff !important;
+  box-shadow:0 0 12px rgba(77,179,255,0.22) !important;
+}
+.msk-homeBtn:active{transform:translateY(1px);}
+.msk-homeFinePrint{opacity:.9;}
+
+
+/* MSK: ensure tab header row flexes correctly */
+.msk-add{display:flex;align-items:center;width:100%;}
+.msk-spacer{flex:1 1 auto;}
+
+/* --- Header + tab tools alignment fixes --- */
+.msk-spacer{flex:1 1 auto;}
+/* Ensure the blue tab header row contents span full width so right tools can push fully right */
+.msk-chase .msk-chase-topRow .msk-add{width:100%;min-width:0;}
+
+
+/* Header: keep title left, controls flush right */
+#msk-app .msk-header{justify-content:flex-start;}
+#msk-app .msk-header-spacer{flex:1 1 auto;min-width:12px;}
+
+
+/* --- MSK header layout fix (0.3.1.21) --- */
+.msk-header { justify-content: flex-start; }
+.msk-header .msk-header-spacer { flex: 1 1 auto; }
+/* Ensure the right control cluster does NOT consume full width */
+.msk-header .msk-add { width: auto !important; min-width: 0 !important; margin-left: auto; justify-content: flex-end; }
+/* Keep the right cluster tight */
+.msk-header .msk-add > label { margin-right: 2px; }
+
+
+/* --- Tab edit row sizing --- */
+#msk-app .msk-tabEditRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:nowrap;
+  width:100%;
+  min-width:0;
+}
+#msk-app .msk-tabEditRow label{ white-space:nowrap; }
+#msk-app .msk-tabEditRow input[name="tabName"]{
+  width:120px;
+  flex:0 0 auto;
+}
+#msk-app .msk-tabEditRow input[name="tabTitle"]{
+  flex:1 1 auto;
+  min-width:260px;
+}
+
+/* Prevent Adjust DC label/input from wrapping in narrow windows */
+#msk-app .msk-tabEditRow input[name="tabDcAdjust"]{ flex:0 0 auto; }
+#msk-app .msk-tabEditRow button{ flex:0 0 auto; }
+
+/* --- Compact confirm dialogs --- */
+.msk-confirm .window-content{
+  padding: 10px 12px !important;
+  min-height: unset !important;
+  height: auto !important;
+}
+.msk-confirm .dialog-content{
+  margin: 0 0 10px 0 !important;
+}
+.msk-confirm .dialog-buttons{
+  margin-top: 0 !important;
+}
+
+
+/* --- Confirm dialog hard compact (v2) --- */
+
+.msk-confirm{
+  height: auto !important;
+}
+.msk-confirm form{
+  height: auto !important;
+}
+.msk-confirm .window-content{
+  flex: 0 0 auto !important;
+}
+.msk-confirm .content,
+.msk-confirm .dialog-content{
+  height: auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* === MSK Chat Card Layout Lock (0.3.1.37) ===
+   Goal: keep chat roll buttons readable across Foundry themes:
+   [Skill Name] [(DC XX)] on one line, centered, DC never wraps, hover never hides text.
+*/
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn,
+#chat-log .chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:nowrap;
+  text-align:center;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.25);
+  border-radius:8px;
+  padding:6px 10px;
+  color:rgba(0,0,0,.92);
+}
+
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:hover,
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:focus{
+  background:rgba(255,255,255,1);
+  color:rgba(0,0,0,.92);
+}
+
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn .msk-btn-line{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  min-width:0;
+}
+
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn .msk-btn-text{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:rgba(0,0,0,.92);
+}
+
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn .msk-btn-dc{
+  flex:0 0 auto;
+  white-space:nowrap;
+  font-weight:800;
+  color:rgba(0,0,0,.92);
+}
+
+/* Ensure theme hover styles do not make inner text transparent */
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:hover .msk-btn-text,
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:hover .msk-btn-dc,
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:focus .msk-btn-text,
+.chat-message .message-content .msk-chat-card[data-msk-card="encounter"] .msk-chat-checks .msk-roll-btn:focus .msk-btn-dc{
+  color:rgba(0,0,0,.92);
+}
+
+/* Knowledge panel (app) gold frame */
+.msk-right .msk-chase-titleBox{
+  border:2px solid var(--msk-border-yellow);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.28), 0 0 14px rgba(255,122,0,.28);
+}
+
+/* Full Knowledge panel frame (Subsystem-style) */
+.msk-right .msk-knowledgePanel{
+  border:2px solid var(--msk-border-yellow);
+  border-radius:10px;
+  padding:10px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.35),
+    0 0 18px rgba(255,122,0,.30);
+}
+
+/* Let inner sections breathe inside the framed panel */
+.msk-right .msk-knowledgePanel > .msk-chase-titleBox{
+  margin-top:0;
+}
+.msk-right .msk-knowledgePanel .msk-checks{
+  margin-top:10px;
+}
+
+
+/* Full pane gold frame (Subsystem-style) */
+.msk-paneFrame {
+  border: 2px solid var(--msk-gold, #ff7a00);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.35), 0 0 18px rgba(255,122,0,0.22);
+  padding: 10px;
+}
+
+
+
+/* MSK Checks Builder Row: grid layout for consistent spacing (tight) */
+.msk-checkBuilder.msk-checkBuilder{
+  display:grid;
+  /* tighter: longer type label, shorter skill list, more room for description */
+  grid-template-columns: 74px minmax(110px, 150px) 48px minmax(0, 1fr) 28px 34px;
+  gap: 3px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+.msk-checkBuilder.msk-checkBuilder > *{min-width:0;}
+.msk-checkBuilder .msk-checkTypeSel{grid-column:1;}
+/* skill/save/lore name inputs share the same column (only one is visible at a time) */
+.msk-checkBuilder .msk-checkSkillSel,
+.msk-checkBuilder .msk-checkSaveSel,
+.msk-checkBuilder .msk-checkLoreInput{
+  grid-column:2;
+  width: 100%;
+}
+.msk-checkBuilder .msk-dcTiny{grid-column:3; width:100%;}
+.msk-checkBuilder input[data-role="msk-desc"]{grid-column:4; width:100%;}
+.msk-checkBuilder .msk-checkVisibilityToggle{grid-column:5; justify-self:center;}
+.msk-checkBuilder .msk-addPlus{grid-column:6; justify-self:end;}
+
+/* override base fixed widths inside the builder row so grid sizing works */
+.msk-checkBuilder.msk-checkBuilder select[data-role="msk-type"],
+.msk-checkBuilder.msk-checkBuilder select[data-role="msk-skill"],
+.msk-checkBuilder.msk-checkBuilder select[data-role="msk-save"],
+.msk-checkBuilder.msk-checkBuilder input[data-role="msk-dc"],
+.msk-checkBuilder.msk-checkBuilder input[data-role="msk-desc"]{
+  width: 100%;
+  max-width: 100%;
+}

@@ -1,0 +1,336 @@
+/* MSK CSS Refactor: base primitives (extracted from tracker.css) */
+
+:root{
+  --msk-border-yellow:#ff7a00;
+  --msk-border-white:#FFFFFF;
+  --msk-border-red:#d34a4a;
+  --msk-border-blue:#3b82f6;
+}
+
+/* =========================================================
+   Shell / Layout
+   ========================================================= */
+
+.msk-shell{display:flex;flex-direction:column;height:100%}
+
+.msk-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px}
+.msk-title{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto}
+/* Keep the app header from "squishing" into two lines when right-side controls exist */
+.msk-title h1{margin:0;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+.msk-add{display:flex;align-items:center;gap:8px}
+.msk-add input[type="text"]{width:220px}
+
+.msk-tabs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 12px}
+.msk-tab{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:8px;line-height:1}
+
+.msk-body{padding:12px;overflow:auto}
+
+/* Subsystem header row (e.g. "Influence System") */
+.msk-tab-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+
+  border:2px solid var(--msk-border-blue);
+  border-radius:10px;
+  padding:10px 14px;
+}
+
+/* GM Information toggle button in tab header */
+.msk-gmInfoBtn{
+  white-space:nowrap;
+}
+
+/* GM Information field block (below each tab's subheader) */
+.msk-gmInfoBox{
+  margin:10px 0 12px 0;
+  border:2px solid rgba(59,130,246,.65); /* blue-ish */
+  border-radius:12px;
+  padding:10px;
+}
+.msk-gmInfoBox textarea{
+  width:100%;
+  box-sizing:border-box;
+  resize:vertical;
+  min-height:110px;
+}
+.msk-gmInfoBox.is-collapsed{display:none;}
+
+.msk-tab-controls{display:flex;align-items:center;gap:8px}
+.msk-tab-controls input[type="text"]{width:260px}
+
+/* Base panel wrapper (no border; sheet frame supplies outer yellow) */
+.msk-panel{padding:10px;border:none;border-radius:10px}
+
+/* Outer yellow border */
+.msk-sheetFrame{
+  border:3px solid var(--msk-border-yellow);
+  border-radius:12px;
+  padding:10px;
+}
+
+/* =========================================================
+   Shared UI helpers
+   ========================================================= */
+
+.msk-inline{display:flex;align-items:center;gap:8px}
+.msk-flexSpacer{flex:1 1 auto}
+
+.msk-muted{opacity:.7;font-size:12px;margin-left:8px}
+.msk-fullWidth{width:100%;box-sizing:border-box}
+
+.msk-mini{
+  border:1px solid var(--color-border-light-2);
+  border-radius:8px;
+  padding:2px 10px;
+  cursor:pointer;
+}
+.msk-miniWide{
+  width:100%;
+  justify-content:center;
+  padding:6px 8px;
+  border-radius:8px;
+  border:1px solid var(--color-border-light-2);
+  display:inline-flex;
+  align-items:center;
+}
+
+/* Compact icon button */
+.msk-iconBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;height:32px;
+  padding:0;
+}
+.msk-iconBtn i{margin:0}
+
+/* Danger buttons get red border */
+button.danger,
+.msk-miniWide.danger{
+  border:1px solid var(--msk-border-red)!important;
+}
+
+/* Eye buttons */
+.msk-mini.msk-eye{padding:1px 6px}
+.msk-mini.msk-eye i{font-size:.6em;line-height:1}
+.msk-eye i.fa-eye{color:#22c55e}
+.msk-eye i.fa-eye-slash{color:#ef4444}
+.msk-eye:hover i{filter:brightness(1.1)}
+
+/* Skill/roll buttons (normalized) */
+.msk-skillBtn,
+.msk-mini.msk-skillBtn,
+.msk-miniWide.msk-skillBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:28px;
+  padding:0 10px;
+  font-size:13px;
+  font-weight:700;
+  line-height:1;
+  border-radius:8px;
+  border:1px solid var(--color-border-light-2);
+  white-space:nowrap;
+
+  outline:1px solid rgba(255,255,255,.85);
+  outline-offset:-2px;
+}
+.msk-skillBtn i{font-size:.9em;margin-right:4px;line-height:1}
+
+/* Subtabs (Profiles) */
+.msk-subtabs{display:inline-flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.msk-subtab{height:28px;padding:0 10px;border-radius:8px;border:1px solid var(--color-border-light-2);cursor:pointer}
+.msk-subtab.active{outline:1px solid var(--msk-border-yellow);outline-offset:-2px}
+.msk-subtab.msk-skillBtn.active{outline:1px solid var(--msk-border-yellow);outline-offset:-2px}
+
+.msk-noResultMsg {
+  margin-top:8px;
+  padding:8px;
+  border-radius:8px;
+  font-style:italic;
+  opacity:.75;
+}
+
+/* Profile frame */
+.msk-profileFrame{
+  border:2px solid #fff;
+  border-radius:12px;
+  padding:10px;
+
+  display:grid;
+  grid-template-columns:240px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  column-gap:8px;
+  row-gap:10px;
+
+  position:relative;
+}
+
+/* Profile header: actor | subtabs | actions */
+.msk-profileHeader{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:240px minmax(0,1fr) auto;
+  align-items:start;
+  gap:10px;
+  padding:6px 8px;
+  border:none;
+  border-radius:10px;
+}
+.msk-profileHeaderLeft,.msk-profileHeaderMid{min-width:0}
+.msk-profileHeaderActions{display:inline-flex;align-items:start;gap:6px}
+
+/* Drag handle */
+.msk-grip{margin-right:0;opacity:.75}
+.msk-actorNameWrap{cursor:grab}
+.msk-dragging{opacity:.6}
+
+.msk-profileHeader .msk-actorName{font-weight:800;font-size:18px}
+
+/* Profile columns */
+.msk-profileLeft{grid-column:1;width:240px;max-width:240px;overflow:hidden}
+.msk-profileRight{display:flex!important;min-width:0;flex-direction:column;gap:10px}
+
+/* Collapsed view (Discovery | Influence) */
+.msk-collapsedRolls{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+@media (max-width:820px){.msk-collapsedRolls{grid-template-columns:1fr}}
+.msk-collapsedBtns{display:flex;flex-direction:column;gap:6px}
+
+/* Expanded checks frame (yellow) */
+.msk-checksWrap{
+  border:2px solid var(--msk-border-yellow);
+  border-radius:12px;
+  padding:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media (max-width:820px){.msk-checksWrap{grid-template-columns:1fr}}
+.msk-fieldsWrap{border:2px solid var(--msk-border-yellow);border-radius:12px;padding:10px}
+.msk-collapsedSection>strong{font-size:14px;font-weight:800}
+
+.msk-mini.msk-addPlus{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;height:28px;
+  padding:2px 0;
+  border-radius:8px;
+  border:1px solid rgba(0,128,0,.55);
+  background:rgba(0,128,0,.18);
+}
+.msk-mini.msk-addPlus i{font-size:.9em}
+.msk-dcTiny{width:40px;padding-left:6px;padding-right:6px}
+.msk-thresholdNumSmall{width:40px;padding:2px 6px}
+
+/* ===============================
+   Import / Export Buttons
+   Match Add (+) size + layout
+   =============================== */
+
+.msk-importBtn,
+.msk-exportBtn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  height:28px;              /* same as .msk-mini */
+  padding:0 12px;           /* slightly wider than Add */
+  border-radius:8px;
+
+  border:1px solid var(--color-border-light-2);
+  font-size:13px;
+  font-weight:600;
+
+  white-space:nowrap;
+}
+
+/* Keep alignment clean in header row */
+.msk-header .msk-importBtn,
+.msk-header .msk-exportBtn {
+  margin-left:4px;
+}
+
+
+/* =========================
+   Shared Checks Builder UI
+   (Skill/Save + Lore name)
+   ========================= */
+.msk-checkBuilder { align-items: center; gap: 6px; }
+.msk-checkBuilder {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
+  padding-right: 6px;
+}
+
+.msk-checkBuilder select,
+.msk-checkBuilder input {
+  min-width: 0;
+}
+
+.msk-checkTypeSel { width: 60px; flex: 0 0 60px; }
+.msk-checkSaveSel { width: 110px; flex: 0 0 auto; }
+
+/* The skill/save "name" selector */
+.msk-checkBuilder select[data-role="msk-skill"],
+.msk-checkBuilder select[data-role="msk-save"] {
+  flex: 0 0 160px;
+}
+
+/* the type selector */
+.msk-checkBuilder select[data-role="msk-type"] {
+  width: 60px;
+  flex: 0 0 60px;
+}
+
+.msk-checkLoreInput { flex: 0 0 120px; }
+
+/* DC fields should stay tiny and never grow */
+.msk-checkBuilder .msk-dcTiny,
+.msk-checkBuilder input[data-role="msk-dc"] {
+  width: 40px;
+  flex: 0 0 40px;
+}
+
+.msk-checkBuilder .msk-addPlus { flex: 0 0 auto; }
+/* =========================================================
+   GM Information (tab-level)
+   ========================================================= */
+.msk-gmInfoBtn{white-space:nowrap}
+.msk-gmInfoBox{margin:10px 0 14px 0}
+.msk-gmInfoBox textarea{
+  width:100%;
+  box-sizing:border-box;
+  min-height:140px;
+  resize:vertical;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.25);
+}
+.msk-gmInfoBox.is-collapsed{display:none}
+
+
+/* Missing subsystem panel */
+.msk-missing-subsystem-panel {
+  border: 2px dashed #b33;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 8px 0;
+  background: rgba(180, 30, 30, 0.06);
+}
+.msk-missing-subsystem-panel h3 {
+  margin: 0 0 6px 0;
+}
+.msk-missing-subsystem-hint {
+  opacity: 0.85;
+  font-style: italic;
+  margin: 6px 0 0 0;
+}

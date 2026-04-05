@@ -1,0 +1,14 @@
+<div class="msk-result-card" style="--msk-card-accent: {{chatAccent}}; --msk-card-fill: {{chatFillColor}}; --msk-card-fill-alpha: {{chatFill}};">
+  <div class="msk-result-header">
+    <span class="msk-badge">MSK</span>
+    <h3 class="msk-result-title">{{header}}</h3>
+  </div>
+
+  <div class="msk-result-body">
+    {{{body}}}
+  </div>
+
+  {{#if gmNote}}
+    <div class="msk-result-gmnote"><em>{{{gmNote}}}</em></div>
+  {{/if}}
+</div>

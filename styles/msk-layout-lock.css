@@ -1,0 +1,96 @@
+/*
+  MSK Layout Lock Layer
+  Purpose: Keep critical layout sizing stable.
+  Loaded LAST via module.json.
+*/
+
+/* Prevent subpixel overflow from creating horizontal scrollbars */
+#msk-app .window-content{
+  overflow-x: hidden;
+}
+
+/* Box sizing must be border-box for predictable width math */
+#msk-app,
+#msk-app *{
+  box-sizing: border-box;
+}
+
+/* --- Main two-column layout lock --- */
+#msk-app .msk-grid{
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+#msk-app .msk-left,
+#msk-app .msk-right,
+#msk-app .msk-rightWrap{
+  min-width: 0;
+}
+
+/* --- Check Builder row lock --- */
+/* NOTE: HBS uses class="msk-checkBuilder msk-checkBuilder"; keep specificity high */
+#msk-app .msk-checkBuilder.msk-checkBuilder{
+  display: grid;
+  grid-template-columns:
+    74px                 /* Type (Skill/Save/Lore) */
+    minmax(110px, 150px) /* Skill/Save/Lore selector */
+    48px                 /* DC */
+    minmax(0, 1fr)       /* Description */
+    28px                 /* eye */
+    34px;                /* + */
+  gap: 3px;
+  align-items: center;
+  width: 100%;
+}
+
+#msk-app .msk-checkBuilder.msk-checkBuilder > *{ min-width: 0; }
+
+/* Ensure only the active selector takes space */
+#msk-app .msk-checkBuilder .msk-checkSkillSel,
+#msk-app .msk-checkBuilder .msk-checkSaveSel,
+#msk-app .msk-checkBuilder .msk-checkLoreInput{
+  display: none;
+}
+#msk-app .msk-checkBuilder .msk-checkSkillSel{ display: block; }
+#msk-app .msk-checkBuilder.is-save .msk-checkSkillSel{ display: none; }
+#msk-app .msk-checkBuilder.is-save .msk-checkSaveSel{ display: block; }
+#msk-app .msk-checkBuilder.is-lore .msk-checkSkillSel,
+#msk-app .msk-checkBuilder.is-lore .msk-checkSaveSel{ display: none; }
+#msk-app .msk-checkBuilder.is-lore .msk-checkLoreInput{ display: block; }
+
+/* Column placement */
+#msk-app .msk-checkBuilder .msk-checkTypeSel{ grid-column: 1; }
+#msk-app .msk-checkBuilder .msk-checkSkillSel,
+#msk-app .msk-checkBuilder .msk-checkSaveSel,
+#msk-app .msk-checkBuilder .msk-checkLoreInput{ grid-column: 2; }
+#msk-app .msk-checkBuilder .msk-dcTiny{ grid-column: 3; }
+#msk-app .msk-checkBuilder input[data-role="msk-desc"]{ grid-column: 4; }
+#msk-app .msk-checkBuilder .msk-checkVisibilityToggle{ grid-column: 5; justify-self: center; }
+#msk-app .msk-checkBuilder .msk-addPlus{ grid-column: 6; justify-self: end; }
+
+/* Force inputs/selects to fill their grid cells (override any base fixed widths) */
+#msk-app .msk-checkBuilder.msk-checkBuilder select,
+#msk-app .msk-checkBuilder.msk-checkBuilder input{
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* --- Builder form control normalization (browser-safe) --- */
+#msk-app .msk-checkBuilder.msk-checkBuilder select,
+#msk-app .msk-checkBuilder.msk-checkBuilder input{
+  height: 28px;
+  line-height: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+}
+#msk-app .msk-checkBuilder.msk-checkBuilder select{
+  padding-right: 22px;
+}
+
+/* --- Optional layout debug --- */
+#msk-app.msk-debug .msk-grid{ outline: 2px dashed rgba(255, 255, 0, 0.55); }
+#msk-app.msk-debug .msk-left{ outline: 2px dashed rgba(0, 200, 255, 0.55); }
+#msk-app.msk-debug .msk-rightWrap{ outline: 2px dashed rgba(255, 120, 0, 0.55); }
+#msk-app.msk-debug .msk-checkBuilder{ outline: 2px dashed rgba(120, 255, 120, 0.65); }
+#msk-app.msk-debug .msk-checkRow{ outline: 1px dashed rgba(255, 255, 255, 0.35); }
