@@ -14,6 +14,7 @@ Run structured knowledge challenges, research tasks, investigation scenes, and s
 - Easy backup and transfer: import or export individual tabs or full data sets as JSON.
 ## Created by Muerte ##
 Professional GM - PF2e Specialist - Foundry Module Developer - USMC Veteran
+
 - StartPlaying Profile: https://startplaying.games/gm/muerte
 - Patreon: https://www.patreon.com/c/Muerte0666
 - Get $10 Discount: https://startplaying.games/referral/ckvmxy89f37xlbopkh3e7e0lo
