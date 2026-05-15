@@ -1,35 +1,39 @@
 {
-  "id": "muertes-simple-knowledge",
-  "title": "Muerte's Simple Knowledge",
-  "description": "Muerte's Simple Knowledge (MSK): Knowledge encounters with chase-styled UI. GM preps tabs/encounters/checks, posts chat buttons, and players receive only the knowledge text.",
-  "version": "1.0.0",
-  "authors": [
-    {
-      "name": "Muerte"
-    }
-  ],
-  "compatibility": {
-    "minimum": "13",
-    "verified": "13"
-  },
-  "relationships": {
-    "systems": [
-      {
-        "id": "pf2e",
-        "type": "system"
-      }
-    ]
-  },
-  "esmodules": [
-    "scripts/init.js"
-  ],
-  "styles": [
-    "styles/msk-base.css",
-    "styles/msk-chase.css",
-    "styles/msk.css",
-    "styles/msk-layout-lock.css"
-  ],
-  "url": "https://github.com/muerte0666/muertes-simple-knowledge",
-  "manifest": "https://raw.githubusercontent.com/muerte0666/muertes-simple-knowledge/main/manifest.json",
-  "download": "https://github.com/muerte0666/muertes-simple-knowledge/releases/download/v1.0.0/muertes-simple-knowledge-1.0.0.zip"
+    "id":  "muertes-simple-knowledge",
+    "title":  "Muerte\u0027s Simple Knowledge",
+    "description":  "Muerte\u0027s Simple Knowledge (MSK): Knowledge encounters with chase-styled UI. GM preps tabs/encounters/checks, posts chat buttons, and players receive only the knowledge text.",
+    "version":  "14.0.5",
+    "authors":  [
+                    {
+                        "name":  "Muerte"
+                    }
+                ],
+    "compatibility":  {
+                          "minimum":  "13",
+                          "verified":  "14"
+                      },
+    "relationships":  {
+                          "systems":  [
+                                          {
+                                              "id":  "pf2e",
+                                              "type":  "system"
+                                          },
+                                          {
+                                              "id":  "sf2e",
+                                              "type":  "system"
+                                          }
+                                      ]
+                      },
+    "esmodules":  [
+                      "scripts/init.js"
+                  ],
+    "styles":  [
+                   "styles/msk-base.css",
+                   "styles/msk-chase.css",
+                   "styles/msk.css",
+                   "styles/msk-layout-lock.css"
+               ],
+    "url":  "https://github.com/muerte0666/muertes-simple-knowledge",
+    "manifest":  "https://raw.githubusercontent.com/muerte0666/muertes-simple-knowledge/main/manifest.json",
+    "download":  "https://github.com/muerte0666/muertes-simple-knowledge/releases/download/v14.0.5/muertes-simple-knowledge-14.0.5.zip"
 }
