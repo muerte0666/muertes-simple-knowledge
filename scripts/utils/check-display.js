@@ -1,3 +1,5 @@
+import { MSK } from './constants.js';
+
 export const SKILL_OPTIONS = [
   { slug: 'perception', label: 'Perception' },
   { slug: 'acrobatics', label: 'Acrobatics' },
@@ -18,13 +20,18 @@ export const SKILL_OPTIONS = [
   { slug: 'thievery', label: 'Thievery' },
 ];
 
+export const STARFINDER_SKILL_OPTIONS = [
+  { slug: 'computers', label: 'Computers' },
+  { slug: 'piloting', label: 'Piloting' },
+];
+
 export const SAVE_OPTIONS = [
   { slug: 'fortitude', label: 'Fortitude' },
   { slug: 'reflex', label: 'Reflex' },
   { slug: 'will', label: 'Will' },
 ];
 
-const SKILL_LABELS = new Map(SKILL_OPTIONS.map(option => [option.slug, option.label]));
+const SKILL_LABELS = new Map([...SKILL_OPTIONS, ...STARFINDER_SKILL_OPTIONS].map(option => [option.slug, option.label]));
 const SAVE_LABELS = new Map(SAVE_OPTIONS.map(option => [option.slug, option.label]));
 
 function startCaseSlug(value) {
@@ -33,12 +40,34 @@ function startCaseSlug(value) {
   return text.replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
+function getConfiguredSkillLabel(slug) {
+  const systemId = globalThis.game?.system?.id;
+  const systemConfig = globalThis.CONFIG?.[systemId?.toUpperCase?.()] ?? globalThis.CONFIG?.PF2E ?? globalThis.CONFIG?.SF2E;
+  const configured = systemConfig?.skills?.[slug];
+
+  if (typeof configured === 'string') return globalThis.game?.i18n?.localize?.(configured) ?? configured;
+  if (configured?.label) return globalThis.game?.i18n?.localize?.(configured.label) ?? configured.label;
+  if (configured?.name) return globalThis.game?.i18n?.localize?.(configured.name) ?? configured.name;
+
+  return null;
+}
+
+export function getSkillOptions() {
+  const includeStarfinder = Boolean(globalThis.game?.settings?.get(MSK.ID, 'includeStarfinderSkills'));
+  const options = includeStarfinder ? [...SKILL_OPTIONS, ...STARFINDER_SKILL_OPTIONS] : SKILL_OPTIONS;
+
+  return options.map(option => ({
+    ...option,
+    label: getConfiguredSkillLabel(option.slug) ?? option.label,
+  }));
+}
+
 export function formatCheckTypeLabel(check) {
   const skill = check?.skill ?? {};
   const type = skill.type;
   const slug = String(skill.slug ?? '').trim().toLowerCase();
 
-  if (type === 'skill') return SKILL_LABELS.get(slug) ?? startCaseSlug(slug);
+  if (type === 'skill') return getConfiguredSkillLabel(slug) ?? SKILL_LABELS.get(slug) ?? startCaseSlug(slug);
   if (type === 'save') return SAVE_LABELS.get(slug) ?? startCaseSlug(slug);
   if (type === 'lore') {
     const loreName = String(skill.name ?? '').trim();

@@ -69,18 +69,16 @@ export async function sendEncounterToChat(html) {
 
   const desc = includeDescription ? await getTextEditorImpl().enrichHTML(enc.descriptionHtml ?? '', { async: true }) : '';
   const hideDCWorld = game.settings.get(MSK.ID, 'hideDCFromPlayers');
-  const playerButtons = buildEncounterChatButtons(checks, {
+  const buttons = buildEncounterChatButtons(checks, {
     tabDcAdjust: Number(tab.tabSettings?.dcAdjust ?? 0),
     showDC: (check) => {
       const hideDC = check?.checkSettings?.hideDCFromPlayers ?? enc.encounterSettings?.hideDCFromPlayers ?? hideDCWorld;
       return !hideDC;
     },
-  });
-  const gmButtons = buildEncounterChatButtons(checks, {
-    tabDcAdjust: Number(tab.tabSettings?.dcAdjust ?? 0),
-    showDC: () => true,
-  });
-  const cardsDiffer = playerButtons.some((button, index) => button.showDC !== gmButtons[index]?.showDC);
+  }).map((button, index) => ({
+    ...button,
+    gmOnlyDC: !button.showDC && Boolean(checks[index]),
+  }));
 
   const _renderTemplate = foundry?.applications?.handlebars?.renderTemplate ?? globalThis.renderTemplate;
   const content = await _renderTemplate(`modules/${MSK.ID}/templates/chat/encounter-card.hbs`, {
@@ -91,7 +89,7 @@ export async function sendEncounterToChat(html) {
     includeDescription,
     tabId: tab.id,
     encounterId: enc.id,
-    checks: playerButtons,
+    checks: buttons,
     chatAccent: game.settings.get(MSK.ID, 'chatCardAccentColor'),
     chatFill: game.settings.get(MSK.ID, 'chatCardFillOpacity'),
     chatFillColor: hexToRgba(game.settings.get(MSK.ID, 'chatCardAccentColor'), game.settings.get(MSK.ID, 'chatCardFillOpacity')),
@@ -110,38 +108,6 @@ export async function sendEncounterToChat(html) {
       }
     }
   });
-
-  if (!cardsDiffer) return;
-
-  const gmContent = await _renderTemplate(`modules/${MSK.ID}/templates/chat/encounter-card.hbs`, {
-    contractV: MSK.CONTRACT_V,
-    moduleName: MSK.NAME,
-    title: enc.title,
-    description: desc,
-    includeDescription,
-    tabId: tab.id,
-    encounterId: enc.id,
-    checks: gmButtons,
-    chatAccent: game.settings.get(MSK.ID, 'chatCardAccentColor'),
-    chatFill: game.settings.get(MSK.ID, 'chatCardFillOpacity'),
-    chatFillColor: hexToRgba(game.settings.get(MSK.ID, 'chatCardAccentColor'), game.settings.get(MSK.ID, 'chatCardFillOpacity')),
-  });
-
-  await ChatMessage.create({
-    content: gmContent,
-    whisper: game.users.filter(user => user.isGM).map(user => user.id),
-    flags: {
-      [MSK.ID]: {
-        v: MSK.CONTRACT_V,
-        type: 'encounter-card',
-        tabId: tab.id,
-        encounterId: enc.id,
-        includeDescription,
-        gmCard: true,
-        createdAt: Date.now(),
-      }
-    }
-  });
 }
 
 export async function openJsonToolsDialog() {
@@ -152,6 +118,51 @@ export async function openJsonToolsDialog() {
   const tabName = tab?.name ?? 'Tab';
   const exportTab = () => JSON.stringify(tab ?? {}, null, 2);
   const exportAll = () => JSON.stringify(state ?? {}, null, 2);
+  const makeImportId = (prefix = 'id') => `${prefix}_${crypto.randomUUID().split('-')[0]}`;
+  const normalizeImportedTabs = (parsed) => {
+    const tabs = Array.isArray(parsed?.tabs) ? parsed.tabs : [parsed];
+    const migrated = ensureMigratedState({
+      schemaVersion: this.mskState?.schemaVersion ?? 2,
+      tabs: tabs.filter(t => t && typeof t === 'object'),
+    });
+    return (migrated.tabs ?? []).filter(t => Array.isArray(t?.encounters));
+  };
+  const cloneTabsForAppend = (tabs, existingState) => {
+    const existingIds = new Set();
+    for (const existingTab of existingState?.tabs ?? []) {
+      if (existingTab?.id) existingIds.add(existingTab.id);
+      for (const enc of existingTab?.encounters ?? []) {
+        if (enc?.id) existingIds.add(enc.id);
+        for (const chk of enc?.checks ?? []) {
+          if (chk?.id) existingIds.add(chk.id);
+        }
+      }
+    }
+    const nextId = (prefix) => {
+      let id = makeImportId(prefix);
+      while (existingIds.has(id)) id = makeImportId(prefix);
+      existingIds.add(id);
+      return id;
+    };
+    let sort = Math.max(0, ...(existingState?.tabs ?? []).map(t => Number(t?.sort) || 0));
+    return tabs.map(sourceTab => {
+      const importedTab = foundry.utils.deepClone(sourceTab);
+      importedTab.id = nextId('tab');
+      importedTab.sort = sort += 100;
+      importedTab.name = String(importedTab.name ?? 'Imported Tab');
+      importedTab.encounters = (importedTab.encounters ?? []).map(enc => {
+        const importedEnc = foundry.utils.deepClone(enc);
+        importedEnc.id = nextId('enc');
+        importedEnc.checks = (importedEnc.checks ?? []).map(chk => {
+          const importedChk = foundry.utils.deepClone(chk);
+          importedChk.id = nextId('chk');
+          return importedChk;
+        });
+        return importedEnc;
+      });
+      return importedTab;
+    });
+  };
 
   const content = `
     <div class="msk-json-tools">
@@ -169,13 +180,18 @@ export async function openJsonToolsDialog() {
           <div class="msk-json-title">Import <span class="msk-muted">(GM only)</span></div>
           <div class="msk-json-grid msk-json-grid-2">
             <button type="button" data-action="imp-tab" class="msk-json-btn msk-json-btn-import">Into “${foundry.utils.escapeHTML(tabName)}”</button>
+            <button type="button" data-action="imp-append" class="msk-json-btn msk-json-btn-import">Add as New</button>
             <button type="button" data-action="imp-all" class="msk-json-btn msk-json-btn-import">All Tabs</button>
           </div>
         </div>
       </div>
 
+      <div class="msk-json-fileRow">
+        <input type="file" name="jsonFile" accept="application/json,.json" />
+        <button type="button" data-action="load-file" class="msk-json-btn msk-json-btn-import">Load File</button>
+      </div>
       <textarea name="json" rows="16" class="msk-json-text" spellcheck="false" placeholder="Click Export to generate JSON, or paste JSON here to import."></textarea>
-      <div class="msk-json-help">Paste JSON above. Import replaces data.</div>
+      <div class="msk-json-help">Paste JSON or load a .json file. "Add as New" appends imported tab data without overwriting existing tabs.</div>
     </div>
   `;
 
@@ -195,8 +211,25 @@ export async function openJsonToolsDialog() {
   if (!root) return;
 
   const ta = root.querySelector('textarea[name="json"]');
+  const fileInput = root.querySelector('input[name="jsonFile"]');
   const getText = () => (ta?.value ?? '').trim();
   const setText = (v) => { if (ta) ta.value = v ?? ''; };
+  const readSelectedFile = async () => {
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      ui.notifications.warn(`${MSK.ABBR}: Choose a JSON file first.`);
+      return false;
+    }
+    try {
+      setText(await file.text());
+      ui.notifications.info(`${MSK.ABBR}: Loaded ${file.name}.`);
+      return true;
+    } catch (err) {
+      ui.notifications.error(`${MSK.ABBR}: Could not read file.`);
+      console.error(err);
+      return false;
+    }
+  };
 
   let lastExportMode = 'tab';
 
@@ -222,6 +255,10 @@ export async function openJsonToolsDialog() {
 
   setText(exportTab());
   lastExportMode = 'tab';
+
+  fileInput?.addEventListener('change', async () => {
+    await readSelectedFile();
+  });
 
   root.addEventListener('click', async (ev) => {
     const btn = ev.target?.closest?.('button[data-action]');
@@ -260,6 +297,11 @@ export async function openJsonToolsDialog() {
       return;
     }
 
+    if (action === 'load-file') {
+      await readSelectedFile();
+      return;
+    }
+
     if (!game.user.isGM) {
       ui.notifications.warn(`${MSK.ABBR}: Only a GM can import.`);
       return;
@@ -294,13 +336,13 @@ export async function openJsonToolsDialog() {
         ? (parsed.tabs.find(t => t?.id === tab.id) ?? null)
         : parsed;
 
-      const migratedIncoming = ensureMigratedState({ schemaVersion: this.mskState?.schemaVersion ?? 2, tabs: [incomingTab] });
-      const incomingTabNormalized = migratedIncoming?.tabs?.[0] ?? incomingTab;
-
-      if (!incomingTab || !incomingTab.encounters) {
+      if (!incomingTab || typeof incomingTab !== 'object' || !Array.isArray(incomingTab.encounters)) {
         ui.notifications.error(`${MSK.ABBR}: JSON is not a tab export.`);
         return;
       }
+
+      const migratedIncoming = ensureMigratedState({ schemaVersion: this.mskState?.schemaVersion ?? 2, tabs: [incomingTab] });
+      const incomingTabNormalized = migratedIncoming?.tabs?.[0] ?? incomingTab;
 
       const idx = next.tabs?.findIndex?.(t => t?.id === tab.id) ?? -1;
       if (idx < 0) {
@@ -314,6 +356,44 @@ export async function openJsonToolsDialog() {
       emitStateUpdated();
       this.mskState = next;
       ui.notifications.info(`${MSK.ABBR}: Imported tab.`);
+      this.render({ force: true });
+      return;
+    }
+
+    if (action === 'imp-append') {
+      const incomingTabs = normalizeImportedTabs(parsed);
+      if (!incomingTabs.length) {
+        ui.notifications.error(`${MSK.ABBR}: JSON does not contain importable tab data.`);
+        return;
+      }
+
+      const ok = await confirmDialogV2({
+        title: 'Add Imported Tabs',
+        content: `<p>This adds ${incomingTabs.length} imported tab${incomingTabs.length === 1 ? '' : 's'} without replacing current MSK data.</p>`,
+        yes: 'Add Tabs',
+        no: 'Cancel',
+        defaultYes: false,
+      });
+      if (!ok) return;
+
+      const next = ensureMigratedState(foundry.utils.deepClone(state));
+      next.tabs ??= [];
+      const appendedTabs = cloneTabsForAppend(incomingTabs, next);
+      next.tabs.push(...appendedTabs);
+      next.uiState ??= { lastTabId: null, lastEncounterIdByTab: {} };
+      next.uiState.lastEncounterIdByTab ??= {};
+      next.uiState.lastTabId = appendedTabs[0]?.id ?? next.uiState.lastTabId;
+      for (const appendedTab of appendedTabs) {
+        next.uiState.lastEncounterIdByTab[appendedTab.id] = appendedTab.encounters?.[0]?.id ?? null;
+      }
+      if (next.__didMigrate) delete next.__didMigrate;
+
+      await setWorldState(next);
+      emitStateUpdated();
+      this.mskState = next;
+      this.selected.tabId = appendedTabs[0]?.id ?? this.selected.tabId;
+      this.selected.encounterId = appendedTabs[0]?.encounters?.[0]?.id ?? null;
+      ui.notifications.info(`${MSK.ABBR}: Added ${appendedTabs.length} imported tab${appendedTabs.length === 1 ? '' : 's'}.`);
       this.render({ force: true });
       return;
     }

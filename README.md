@@ -1,21 +1,41 @@
-## Muerte’s Simple Knowledge ##
-A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e in Foundry VTT.
-## Purpose ##
-Run structured knowledge challenges, research tasks, investigation scenes, and skill-based discovery without slowing down play.
-## Highlights ##
-- Pathfinder 2e and Starfinder 2e support: use PF2e skills, saves, perception, lore checks, and optional Starfinder Computers and Engineering skills.
-- Structured knowledge scenes: organize prep into tabs, knowledge entries, checks, descriptions, and results.
-- One-click player rolls: post a knowledge card to chat and let players roll directly from the card.
-- Outcome-driven reveals: write separate Critical Success, Success, Failure, and Critical Failure results with optional GM-only notes.
-- Layered visibility control: show or hide tabs, knowledge entries, checks, DCs, descriptions, and result messages.
-- Adjustable difficulty: apply tab-level DC adjustments that immediately update checks and chat cards.
-- Roll privacy defaults: choose public, GM, blind GM, or self roll modes, plus result visibility defaults.
-- GM-to-player workflow: open the app for all players, view the interface as a player, and keep GM prep protected.
-- Easy backup and transfer: import or export individual tabs or full data sets as JSON.
-## Created by Muerte ##
-Professional GM - PF2e Specialist - Foundry Module Developer - USMC Veteran
+﻿# Muerte's Simple Knowledge
 
-- StartPlaying Profile: https://startplaying.games/gm/muerte
-- Patreon: https://www.patreon.com/c/Muerte0666
-- Get $10 Discount: https://startplaying.games/referral/ckvmxy89f37xlbopkh3e7e0lo
-- Discord Community: https://discord.gg/e3HCrdY5XN
+A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e in Foundry VTT.
+
+## Highlights
+- Pathfinder 2e and Starfinder 2e support, including optional Computers and Piloting skills
+- Structured tabs, knowledge entries, checks, descriptions, and result outcomes
+- One-click player rolls from posted knowledge chat cards
+- Critical Success, Success, Failure, and Critical Failure result text with optional GM-only notes
+- Layered visibility controls for tabs, entries, checks, DCs, descriptions, and result messages
+- Tab-level DC adjustment for scaling checks on the fly
+- Roll mode and result visibility defaults for public, GM, blind GM, self, GM-only, and GM-plus-roller workflows
+- GM tools to open the app for all players, view as player, and keep prep protected
+- Sidebar tab navigation to keep long tab lists from overflowing the header
+- JSON import/export for individual tabs or full data sets, with pasted JSON or loaded `.json` files
+- Append-safe import that can add imported tabs alongside existing prep without overwriting current tabs
+
+## Release Notes
+This package is the 14.1.5 release. It restores Send to Chat and result posting to a single-card flow while keeping hidden DCs and GM result notes visible only to GM clients. Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
+
+## Testing Focus
+Use the included `GM-PLAYER-REGRESSION-CHECKLIST.md` before publishing or handing a build to testers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

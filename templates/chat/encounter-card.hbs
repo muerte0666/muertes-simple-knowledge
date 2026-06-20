@@ -23,6 +23,9 @@
           {{#if c.showDC}}
             <span class="msk-btn-dc">(DC {{c.dc}})</span>
           {{/if}}
+          {{#if c.gmOnlyDC}}
+            <span class="msk-btn-dc gm-only">(DC {{c.dc}})</span>
+          {{/if}}
         </span>
       </button>
     {{/each}}

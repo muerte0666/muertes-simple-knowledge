@@ -12,10 +12,11 @@ export function registerChatHandlers() {
     bindChatCardRollHandler(el);
   });
 
-  // v13+: renderChatMessage is deprecated; bind to renderChatMessageHTML when available.
-  const hookName = (typeof Hooks?.events === 'object' && 'renderChatMessageHTML' in Hooks.events)
-    ? 'renderChatMessageHTML'
-    : 'renderChatMessage';
+  // v13+: renderChatMessage is deprecated in v14+; use renderChatMessageHTML when on v14+.
+  // We check game.release.generation (a stable public API) rather than inspecting
+  // Hooks.events, which is undocumented and may change between Foundry versions.
+  const isV14Plus = Number(game.release?.generation ?? 0) >= 14;
+  const hookName = isV14Plus ? 'renderChatMessageHTML' : 'renderChatMessage';
 
   Hooks.on(hookName, (_message, html) => {
     // Fallback click binding directly on the message node

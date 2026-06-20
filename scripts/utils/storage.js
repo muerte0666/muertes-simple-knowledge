@@ -8,6 +8,7 @@ function defaultState() {
     uiState: {
       lastTabId: null,
       lastEncounterIdByTab: {},
+      tabsCollapsed: false,
     },
     settings: {
       // mirrored for portability; actual live values come from game.settings
@@ -47,11 +48,15 @@ export function ensureMigratedState(state) {
   }
 
   if (!s.uiState) {
-    s.uiState = { lastTabId: null, lastEncounterIdByTab: {} };
+    s.uiState = { lastTabId: null, lastEncounterIdByTab: {}, tabsCollapsed: false };
     did = true;
   }
   if (!s.uiState.lastEncounterIdByTab) {
     s.uiState.lastEncounterIdByTab = {};
+    did = true;
+  }
+  if (typeof s.uiState.tabsCollapsed !== 'boolean') {
+    s.uiState.tabsCollapsed = false;
     did = true;
   }
 

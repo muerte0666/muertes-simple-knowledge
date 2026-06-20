@@ -1,8 +1,13 @@
 import { MSK } from '../utils/constants.js';
-import { SKILL_OPTIONS, SAVE_OPTIONS, decorateCheckForDisplay } from '../utils/check-display.js';
+import { SAVE_OPTIONS, decorateCheckForDisplay, getSkillOptions } from '../utils/check-display.js';
 
 const getTextEditorImpl = () => foundry?.applications?.ux?.TextEditor?.implementation ?? Object.getOwnPropertyDescriptor(globalThis, 'TextEditor')?.value;
 
+const KNOWLEDGE_TITLE_PREFIX_RE = /^(?=[^:]{1,90}:)(?=[^:]*\b(?:Arcana|Athletics|Acrobatics|Crafting|Deception|Diplomacy|Intimidation|Medicine|Nature|Occultism|Performance|Religion|Society|Stealth|Survival|Thievery|Perception|Lore|Computers|Piloting)\b)[^:]+:\s+/i;
+
+function sidebarKnowledgeTitle(title) {
+  return String(title ?? '').replace(KNOWLEDGE_TITLE_PREFIX_RE, '').trim() || String(title ?? '');
+}
 
 export async function buildAppData() {
   const isGMOriginal = game.user.isGM;
@@ -14,9 +19,14 @@ export async function buildAppData() {
   const tabs = this._visibleTabsForUser().slice().sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
   const selectedTab = selectedTabIsHome ? null : (tabs.find(t => t.id === this.selected.tabId) ?? null);
   const encounters = selectedTab ? this._visibleEncountersForUser(selectedTab).slice().sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0)) : [];
+  const sidebarEncounters = encounters.map(e => ({
+    ...e,
+    sidebarTitle: sidebarKnowledgeTitle(e.title),
+  }));
   const selectedEncounter = encounters.find(e => e.id === this.selected.encounterId) ?? null;
   const checks = (selectedEncounter?.checks ?? []).slice().sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
   const tabDcAdjust = selectedTab?.tabSettings?.dcAdjust ?? 0;
+  const tabsCollapsed = Boolean(this.mskState?.uiState?.tabsCollapsed);
 
   const checksForTemplate = checks.map(c => decorateCheckForDisplay(c, { tabDcAdjust }));
 
@@ -48,13 +58,14 @@ export async function buildAppData() {
     tabs,
     selectedTab,
     selectedTabIsHome,
-    encounters,
+    encounters: sidebarEncounters,
     selectedEncounter,
     checks: checksForTemplate,
-    skillOptions: SKILL_OPTIONS,
+    skillOptions: getSkillOptions(),
     saveOptions: SAVE_OPTIONS,
     encResults,
     tabDcAdjust,
+    tabsCollapsed,
     emptyTabs: tabs.length === 0,
     emptyEncounters: !!selectedTab && encounters.length === 0,
     includeDescDefault: game.settings.get(MSK.ID, 'chatCardIncludeDescriptionByDefault'),

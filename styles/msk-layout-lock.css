@@ -18,14 +18,210 @@
 /* --- Main two-column layout lock --- */
 #msk-app .msk-grid{
   display: grid;
-  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px;
   align-items: start;
 }
+
+#msk-app .msk-workspace{
+  width: 100%;
+  min-width: 0;
+}
+
 #msk-app .msk-left,
 #msk-app .msk-right,
 #msk-app .msk-rightWrap{
   min-width: 0;
+}
+
+#msk-app .msk-sidebar{
+  width: 166px;
+  max-width: 166px;
+  overflow: hidden;
+}
+
+#msk-app .msk-tabSidebar{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 6px;
+}
+
+#msk-app .msk-sidebarTitleRow{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+#msk-app .msk-sidebarTitleRow .msk-chase-sectionTitle{
+  margin: 0;
+}
+
+#msk-app .msk-sidebarToggle{
+  width: 28px;
+  height: 26px;
+  flex: 0 0 28px;
+}
+
+#msk-app .msk-tabSidebar .msk-tab{
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#msk-app .msk-tabSidebar .msk-tabLabel,
+#msk-app .msk-encTitle{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#msk-app .msk-encTools{
+  flex: 0 0 auto;
+  gap: 3px;
+}
+
+#msk-app .msk-encRow{
+  width: 100%;
+  max-width: 100%;
+  gap: 6px;
+  padding: 6px 6px 6px 8px;
+  border-radius: 8px;
+}
+
+#msk-app .msk-encRow .msk-iconBtn{
+  width: 26px;
+  height: 26px;
+}
+
+#msk-app .msk-tabCollapsedSummary{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 8px;
+  background: rgba(0,0,0,.18);
+  font-weight: 700;
+  width: 100%;
+}
+
+#msk-app .msk-tabCollapsedSummary span{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#msk-app .msk-tabsCollapsed .msk-tabList{
+  display: none;
+}
+
+#msk-app .msk-grid.msk-workspace{
+  grid-template-columns: max-content minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+#msk-app .msk-left.msk-sidebar{
+  width: 166px !important;
+  max-width: 166px !important;
+  min-width: 0 !important;
+}
+
+#msk-app .msk-tabSidebar,
+#msk-app .msk-knowledgeNav,
+#msk-app .msk-encList,
+#msk-app .msk-tabList{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#msk-app .msk-tabSidebar .msk-tab,
+#msk-app .msk-tabCollapsedSummary,
+#msk-app .msk-encRow{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#msk-app .msk-tabEditRow{
+  display: grid;
+  grid-template-columns:
+    max-content 92px
+    max-content minmax(100px, 220px)
+    max-content 48px 30px max-content;
+  align-items: center;
+  column-gap: 7px;
+  row-gap: 6px;
+}
+
+#msk-app .msk-tabEditRow input[name="tabName"]{
+  width: 100%;
+  max-width: 92px;
+  min-width: 0;
+}
+
+#msk-app .msk-tabEditRow input[name="tabTitle"]{
+  width: 100%;
+  max-width: 220px;
+  min-width: 0;
+}
+
+#msk-app .msk-tabEditRow input[name="tabDcAdjust"]{
+  width: 48px;
+  min-width: 48px;
+}
+
+#msk-app .msk-tabEditRow .msk-spacer{
+  display: none;
+}
+
+#msk-app .msk-tabEditRow .msk-topRightTools{
+  margin-left: 0;
+  gap: 6px;
+  justify-self: end;
+}
+
+#msk-app .msk-chase .msk-chase-topRow .msk-tabEditRow{
+  display: grid !important;
+  grid-template-columns:
+    max-content 92px
+    max-content minmax(100px, 220px)
+    max-content 48px 30px max-content !important;
+  width: 100% !important;
+}
+
+#msk-app .msk-chase .msk-chase-topRow .msk-tabEditRow input[name="tabName"]{
+  width: 92px !important;
+  min-width: 0 !important;
+  max-width: 92px !important;
+}
+
+#msk-app .msk-chase .msk-chase-topRow .msk-tabEditRow input[name="tabTitle"]{
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 220px !important;
+}
+
+#msk-app .msk-chase .msk-chase-topRow .msk-tabEditRow input[name="tabDcAdjust"]{
+  width: 48px !important;
+  min-width: 48px !important;
+}
+
+@media (max-width: 980px){
+  #msk-app .msk-chase .msk-chase-topRow .msk-tabEditRow{
+    grid-template-columns:
+      max-content 86px
+      max-content minmax(96px, 1fr)
+      max-content 48px 30px max-content !important;
+  }
 }
 
 /* --- Check Builder row lock --- */

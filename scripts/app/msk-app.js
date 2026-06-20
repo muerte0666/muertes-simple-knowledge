@@ -27,6 +27,19 @@ export class MSKApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.mskState = null;
     this.selected = { tabId: null, encounterId: null };
     this._commitTimeout = null;
+
+    // Flush any pending debounced write before the page unloads so the GM
+    // doesn't lose the last few keystrokes if they close the window quickly.
+    this._beforeUnloadHandler = () => {
+      if (this._commitTimeout !== null && this._isGMEffective() && this.mskState) {
+        clearTimeout(this._commitTimeout);
+        this._commitTimeout = null;
+        // game.settings.set is async; fire-and-forget is the best we can do
+        // inside a synchronous beforeunload callback.
+        setWorldState(this.mskState).catch(() => {});
+      }
+    };
+    window.addEventListener('beforeunload', this._beforeUnloadHandler);
   }
 
   _isGMOriginal() {

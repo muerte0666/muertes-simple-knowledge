@@ -34,7 +34,7 @@ export function registerSettings() {
   // Defaults
   game.settings.register(MSK.ID, 'defaultRollMode', {
     name: 'Defaults: Roll Mode',
-    hint: 'Default roll privacy used when MSK triggers PF2e checks.',
+    hint: 'Default roll privacy used when MSK triggers PF2e/SF2e checks.',
     scope: 'world',
     config: true,
     type: String,
@@ -77,6 +77,16 @@ export function registerSettings() {
     config: true,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MSK.ID, 'includeStarfinderSkills', {
+    name: 'Rules: Include Starfinder 2e skills',
+    hint: 'Adds Computers and Piloting to the skill choices. Enabled by default in Starfinder 2e worlds.',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: game.system?.id === 'sf2e',
+    onChange: () => game[MSK.NS]?.app?.render?.(false),
   });
 
   game.settings.register(MSK.ID, 'blockRollIfTabHidden', {

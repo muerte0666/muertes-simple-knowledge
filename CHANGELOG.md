@@ -1,6 +1,20 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to Muerte's Simple Knowledge are collected here.
+
+## 14.1.0
+
+- Moved Home and knowledge tabs from the horizontal header row into a sidebar layout.
+- Tightened tab, knowledge-entry, check-row, and tab-header sizing so long labels truncate instead of overflowing.
+- Added JSON file loading to the import/export dialog.
+- Added append-safe import that brings imported tab data in as new tabs without overwriting existing prep.
+- Updated the Home tab highlights, README, release metadata, and staged package for the 14.1.0 release.
+
+## 14.0.6
+
+- Changed the optional Starfinder skill picker from Computers and Engineering to Computers and Piloting.
+- Updated the Home tab, README, settings hint, manifest metadata, and release package for the 14.0.6 release.
+- Added notes-folder release information and a release PDF for this build.
 
 ## 14.0.5
 
@@ -173,3 +187,83 @@ All notable changes to Muerte's Simple Knowledge are collected here.
 
 ## Version
 - `module.json` updated to `0.4.5`
+
+## 0.4.4
+
+## Archive-Derived
+- Modularized the app into context, dialogs, listeners, and state helper files.
+- Added the GM/player regression checklist to the packaged module.
+- Kept the split style stack for base, chase, app, and layout-lock styling.
+
+## 0.4.0 - 0.4.3
+
+## Archive-Derived
+- Continued the post-0.3.x stabilization line with the chase UI, settings app, color utilities, chat commands, sockets, storage, and layout-lock styling in-package.
+- Preserved Pathfinder 2e as the supported system with Foundry VTT 13 minimum and verified compatibility.
+
+## 0.3.2.0 - 0.3.2.4
+
+## Archive-Derived
+- Added the `msk-layout-lock.css` layer to stabilize the app layout.
+- Continued shipping the settings app template and color utility introduced during the 0.3.1 line.
+- Kept the chat command and chase UI source layout intact across the 0.3.2 maintenance builds.
+
+## 0.3.1 - 0.3.1.64
+
+## Archive-Derived
+- Iterated heavily on the chase UI release line.
+- Added the settings app files, settings template, and shared color utility during this line.
+- Retained the PF2e knowledge workflow with chat cards, roll utilities, sockets, storage, and journal launcher support.
+
+## 0.3.0
+
+## Archive-Derived
+- Added the dedicated chat command module.
+- Continued the chase-styled knowledge encounter workflow from the 0.2.x line.
+
+## 0.2.0 - 0.2.8.2
+
+## Archive-Derived
+- Introduced the chase-styled UI release line.
+- Packaged the module with app, chat, roll, settings, sockets, storage, style, and Handlebars template files.
+- Included multiple maintenance and hotfix packages through the 0.2.x line.
+
+## 0.1.0 - 0.1.1
+
+## Archive-Derived
+- Initial archived release line for Muerte's Simple Knowledge.
+- Supported PF2e knowledge checks where the GM configured encounters, posted chat buttons, and players received knowledge text without revealing hidden outcome data.
+## 14.1.1
+
+## Release
+- Tightened the side-tab layout and selected-tab editor header so the Adjust DC control, add button, visibility toggle, and delete button stay reachable without resizing the window.
+- Reduced the tab name/title field footprint and shortened the side tab column while preserving ellipsis for long tab names.
+- Refreshed release metadata and packaged the 14.1.1 Foundry install zip.
+## 14.1.2
+
+## Release
+- Added a collapse/expand toggle for the Tabs list so the Knowledge entries can move higher in the sidebar.
+- Strengthened the selected-tab header layout with shorter labels and hard-bounded Name, Title, and DC Adjust controls so tab actions stay reachable.
+- Archived the 14.1.1 package and refreshed release metadata plus the 14.1.2 Foundry install zip.
+## 14.1.3
+
+## Release
+- Shortened Knowledge sidebar labels by hiding skill/check prefixes such as "Religion:" and "Society, Performance, or Poetry Lore:" while preserving the full title in the row tooltip.
+- Narrowed the whole sidebar column and compacted Knowledge rows/actions so the main Knowledge editor has more room.
+- Updated all import JSON files to remove skill/check prefixes from Knowledge titles.
+- Archived the 14.1.2 package and refreshed release metadata plus the 14.1.3 Foundry install zip.
+## 14.1.4
+
+## Release
+- Locked the sidebar to a compact structural width so the whole left column shrinks, not just the tab/Knowledge buttons inside it.
+- Changed the workspace grid to use a content-sized navigation column and give the recovered space back to the Knowledge editor.
+- Tightened tab and Knowledge row stretching inside the compact sidebar so they no longer float in an oversized panel.
+- Archived the 14.1.3 package and refreshed release metadata plus the 14.1.4 Foundry install zip.
+## 14.1.5
+
+## Release
+- Restored Send to Chat to one public Simple Knowledge card instead of creating a duplicate private GM card.
+- Kept hidden DCs on the same public card as GM-only fragments, so players still do not see them unless DC hiding is disabled.
+- Kept GM result notes on the same result card as GM-only fragments instead of posting a second GM whisper card.
+- Refreshed release metadata and packaged the 14.1.5 Foundry install zip.
+

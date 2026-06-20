@@ -168,6 +168,18 @@ async function getStatistic(actor, chk) {
         if (st?.roll) return st;
       }
     }
+
+    // Log the attempted slugs so GMs can diagnose mismatches between the
+    // configured lore name and the actual PF2e skill key on the actor.
+    const availableLoreKeys = Object.keys(actor.skills ?? {}).filter(k =>
+      k.includes('lore') || k.includes(loreSlug)
+    );
+    console.warn(
+      `[${MSK.ABBR}] Lore skill lookup failed for "${loreName}".`,
+      `Tried candidates: [${candidates.join(', ')}].`,
+      `Available lore-related skill keys on actor: [${availableLoreKeys.join(', ') || 'none found'}].`,
+      `All actor skill keys:`, Object.keys(actor.skills ?? {})
+    );
   }
 
   return null;
@@ -238,8 +250,6 @@ export async function runKnowledgeCheck({ state, tab, enc, chk, actor, source })
   const enriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(resultHtml ?? '', { async: true });
 
   const { whisper } = getRecipients(responseVisibility, game.user.id);
-  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
-  const nonGMRecipients = whisper.filter(id => !gmIds.includes(id));
   const gmNote = gmNoteHtml
     ? await foundry.applications.ux.TextEditor.implementation.enrichHTML(gmNoteHtml, { async: true })
     : null;
@@ -258,54 +268,16 @@ export async function runKnowledgeCheck({ state, tab, enc, chk, actor, source })
   };
 
   const speaker = ChatMessage.getSpeaker({ actor });
-  const baseContent = await renderResponseCard({
-    header,
-    body: enriched,
-    gmNote: null,
-  });
-
-  if (!gmNote) {
-    await ChatMessage.create({
-      content: baseContent,
-      whisper,
-      speaker,
-      flags: { [MSK.ID]: flags },
-    });
-    return;
-  }
-
-  const gmContent = await renderResponseCard({
+  const content = await renderResponseCard({
     header,
     body: enriched,
     gmNote,
   });
 
-  if (responseVisibility === 'gm-only' || (!whisper.length && responseVisibility !== 'public') || nonGMRecipients.length === 0) {
-    await ChatMessage.create({
-      content: gmContent,
-      whisper: gmIds,
-      speaker,
-      flags: { [MSK.ID]: flags },
-    });
-    return;
-  }
-
   await ChatMessage.create({
-    content: baseContent,
-    whisper: responseVisibility === 'public' ? [] : nonGMRecipients,
+    content,
+    whisper,
     speaker,
     flags: { [MSK.ID]: flags },
-  });
-
-  await ChatMessage.create({
-    content: gmContent,
-    whisper: gmIds,
-    speaker,
-    flags: {
-      [MSK.ID]: {
-        ...flags,
-        gmNoteOnly: true,
-      },
-    },
   });
 }

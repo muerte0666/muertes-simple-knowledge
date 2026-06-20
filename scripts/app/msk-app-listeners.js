@@ -8,6 +8,13 @@ import {
 import { emitOpenApp } from '../utils/sockets.js';
 import { resolveActorForUser, runKnowledgeCheck } from '../chat/roll-utils.js';
 
+const KNOWLEDGE_TITLE_PREFIX_RE = /^(?=[^:]{1,90}:)(?=[^:]*\b(?:Arcana|Athletics|Acrobatics|Crafting|Deception|Diplomacy|Intimidation|Medicine|Nature|Occultism|Performance|Religion|Society|Stealth|Survival|Thievery|Perception|Lore|Computers|Piloting)\b)[^:]+:\s+/i;
+
+function sidebarKnowledgeTitle(title) {
+  const full = String(title ?? '');
+  return full.replace(KNOWLEDGE_TITLE_PREFIX_RE, '').trim() || full;
+}
+
 async function confirmDialog({ title, content, yes = 'Delete', no = 'Cancel', defaultYes = false } = {}) {
   try {
     const proceed = await foundry.applications.api.DialogV2.confirm({
@@ -27,6 +34,14 @@ async function confirmDialog({ title, content, yes = 'Delete', no = 'Cancel', de
 }
 
 export function activateMSKAppListeners(html) {
+  html.find('[data-action="toggle-tabs-collapse"]').on('click', async (ev) => {
+    ev.preventDefault();
+    this.mskState.uiState ??= {};
+    this.mskState.uiState.tabsCollapsed = !Boolean(this.mskState.uiState.tabsCollapsed);
+    if (game.user.isGM) await this._commitImmediate('toggle-tabs-collapse');
+    this.render();
+  });
+
   html.find('[data-action="select-home"]').on('click', async (ev) => {
     ev.preventDefault();
     this.selected.tabId = this.HOME_TAB_ID;
@@ -207,7 +222,10 @@ export function activateMSKAppListeners(html) {
     if (!enc) return;
     enc.title = ev.currentTarget.value;
     this._commitDebounced('enc-title');
-    html.find(`.msk-encRow[data-encounter-id="${enc.id}"] .msk-encTitle`).text(enc.title);
+    html.find(`.msk-encRow[data-encounter-id="${enc.id}"]`)
+      .attr('title', enc.title)
+      .find('.msk-encTitle')
+      .text(sidebarKnowledgeTitle(enc.title));
   });
 
   html.find('[data-action="edit-encounter-description"]').on('input', (ev) => {
@@ -288,6 +306,7 @@ export function activateMSKAppListeners(html) {
   });
 
   html.find('[data-action="edit-encounter-result"]').on('change', async (ev) => {
+    if (!game.user.isGM) return;
     const key = ev.currentTarget.dataset.resultKey;
     const enc = this._getSelectedEncounter();
     if (!enc || !key) return;
