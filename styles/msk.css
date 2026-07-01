@@ -629,27 +629,6 @@ body:not(.msk-user-is-gm) .gm-only {
   flex:0 0 28px;
 }
 
-.msk-checkVisibilityToggle{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:28px;
-  height:28px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.16);
-  background:rgba(255,255,255,0.04);
-  cursor:pointer;
-}
-.msk-checkVisibilityToggle input{
-  position:absolute;
-  width:1px !important;
-  height:1px !important;
-  opacity:0;
-  pointer-events:none;
-}
-.msk-checkVisibilityToggle i{ color:#2ecc71; }
-.msk-checkVisibilityToggle input:not(:checked) + i{ color:#e74c3c; }
-
 /* Chat button overflow handling */
 .msk-roll-btn{ align-items:center; }
 .msk-roll-btn .msk-check-label{
@@ -1123,8 +1102,7 @@ body:not(.msk-user-is-gm) .gm-only {
 }
 .msk-checkBuilder .msk-dcTiny{grid-column:3; width:100%;}
 .msk-checkBuilder input[data-role="msk-desc"]{grid-column:4; width:100%;}
-.msk-checkBuilder .msk-checkVisibilityToggle{grid-column:5; justify-self:center;}
-.msk-checkBuilder .msk-addPlus{grid-column:6; justify-self:end;}
+.msk-checkBuilder .msk-addPlus{grid-column:5; justify-self:end;}
 
 /* override base fixed widths inside the builder row so grid sizing works */
 .msk-checkBuilder.msk-checkBuilder select[data-role="msk-type"],

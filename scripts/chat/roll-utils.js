@@ -65,16 +65,13 @@ function extractD20(roll) {
 }
 
 function resolveDefaults({ state, tab, enc, chk }) {
-  const defaultRollMode = game.settings.get(MSK.ID, 'defaultRollMode');
   const defaultResp = game.settings.get(MSK.ID, 'defaultResponseVisibility');
-
-  const rollMode = chk.checkSettings?.rollMode ?? enc.encounterSettings?.defaultRollMode ?? tab.tabSettings?.defaultRollMode ?? defaultRollMode;
   const responseVisibility = chk.checkSettings?.responseVisibility ?? enc.encounterSettings?.defaultResponseVisibility ?? tab.tabSettings?.defaultResponseVisibility ?? defaultResp;
 
   const hideDCWorld = game.settings.get(MSK.ID, 'hideDCFromPlayers');
   const hideDC = chk.checkSettings?.hideDCFromPlayers ?? enc.encounterSettings?.hideDCFromPlayers ?? hideDCWorld;
 
-  return { rollMode, responseVisibility, hideDC };
+  return { responseVisibility, hideDC };
 }
 
 function getRecipients(responseVisibility, rollerUserId) {
@@ -186,7 +183,7 @@ async function getStatistic(actor, chk) {
 }
 
 export async function runKnowledgeCheck({ state, tab, enc, chk, actor, source }) {
-  const { rollMode, responseVisibility, hideDC } = resolveDefaults({ state, tab, enc, chk });
+  const { responseVisibility, hideDC } = resolveDefaults({ state, tab, enc, chk });
   const tabAdjust = Number(tab.tabSettings?.dcAdjust ?? 0);
   const baseDC = Number(chk.dc ?? 0);
   const effectiveDC = baseDC + tabAdjust;
@@ -197,10 +194,9 @@ export async function runKnowledgeCheck({ state, tab, enc, chk, actor, source })
     return;
   }
 
-  // Always use PF2e check flow and post the system check card first.
-  // Post the PF2e system check card first and respect the configured roll mode.
+  // Always keep the PF2e degree-of-success roll card secret.
   const postPf2eRoll = true;
-  const effectiveRollMode = rollMode ?? 'blindroll';
+  const effectiveRollMode = 'blindroll';
 
   let roll;
   try {

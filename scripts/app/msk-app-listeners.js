@@ -423,13 +423,12 @@ export function activateMSKAppListeners(html) {
     const loreName = String(b.find('[data-role="msk-lore"]').val() ?? '').trim();
     const dcNum = Number(b.find('[data-role="msk-dc"]').val() ?? 0);
     const desc = String(b.find('[data-role="msk-desc"]').val() ?? '').trim();
-    const showToPlayers = Boolean(b.find('[data-role="msk-show-to-players"]').prop('checked'));
 
     const chk = newCheckTemplate();
     chk.description = desc;
     chk.dc = Number.isNaN(dcNum) ? 0 : Math.trunc(dcNum);
     chk.checkSettings = chk.checkSettings ?? {};
-    chk.checkSettings.showToPlayers = showToPlayers;
+    chk.checkSettings.showToPlayers = true;
     chk.skill = type === 'lore'
       ? { type: 'lore', name: loreName || 'Lore' }
       : (type === 'save'
@@ -441,7 +440,6 @@ export function activateMSKAppListeners(html) {
     enc.checks.push(chk);
 
     b.find('[data-role="msk-desc"]').val('');
-    b.find('[data-role="msk-show-to-players"]').prop('checked', true);
     await this._commitImmediate('add-check-from-builder');
     this.render();
   });

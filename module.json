@@ -2,7 +2,7 @@
     "id":  "muertes-simple-knowledge",
     "title":  "Muerte\u0027s Simple Knowledge",
     "description":  "Muerte\u0027s Simple Knowledge (MSK): Knowledge encounters with chase-styled UI. GM preps tabs/encounters/checks, posts chat buttons, and players receive only the knowledge text.",
-    "version":  "14.1.5",
+    "version":  "14.1.6",
     "authors":  [
                     {
                         "name":  "Muerte"
@@ -35,5 +35,5 @@
                ],
     "url":  "https://github.com/muerte0666/muertes-simple-knowledge",
     "manifest":  "https://raw.githubusercontent.com/muerte0666/muertes-simple-knowledge/main/manifest.json",
-    "download":  "https://github.com/muerte0666/muertes-simple-knowledge/releases/download/v14.1.5/muertes-simple-knowledge-14.1.5.zip"
+    "download":  "https://github.com/muerte0666/muertes-simple-knowledge/releases/download/v14.1.6/muertes-simple-knowledge-14.1.6.zip"
 }

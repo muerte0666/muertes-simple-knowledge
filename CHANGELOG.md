@@ -2,6 +2,44 @@
 
 All notable changes to Muerte's Simple Knowledge are collected here.
 
+## 14.1.6
+
+- Refreshed release metadata and packaged the 14.1.6 Foundry install zip.
+- No module behavior changes were made in this release.
+
+## 14.1.5
+
+- Restored Send to Chat to one public Simple Knowledge card instead of creating a duplicate private GM card.
+- Kept hidden DCs on the same public card as GM-only fragments, so players still do not see them unless DC hiding is disabled.
+- Kept GM result notes on the same result card as GM-only fragments instead of posting a second GM whisper card.
+- Refreshed release metadata and packaged the 14.1.5 Foundry install zip.
+
+## 14.1.4
+
+- Locked the sidebar to a compact structural width so the whole left column shrinks, not just the tab/Knowledge buttons inside it.
+- Changed the workspace grid to use a content-sized navigation column and give the recovered space back to the Knowledge editor.
+- Tightened tab and Knowledge row stretching inside the compact sidebar so they no longer float in an oversized panel.
+- Archived the 14.1.3 package and refreshed release metadata plus the 14.1.4 Foundry install zip.
+
+## 14.1.3
+
+- Shortened Knowledge sidebar labels by hiding skill/check prefixes such as "Religion:" and "Society, Performance, or Poetry Lore:" while preserving the full title in the row tooltip.
+- Narrowed the whole sidebar column and compacted Knowledge rows/actions so the main Knowledge editor has more room.
+- Updated all import JSON files to remove skill/check prefixes from Knowledge titles.
+- Archived the 14.1.2 package and refreshed release metadata plus the 14.1.3 Foundry install zip.
+
+## 14.1.2
+
+- Added a collapse/expand toggle for the Tabs list so the Knowledge entries can move higher in the sidebar.
+- Strengthened the selected-tab header layout with shorter labels and hard-bounded Name, Title, and DC Adjust controls so tab actions stay reachable.
+- Archived the 14.1.1 package and refreshed release metadata plus the 14.1.2 Foundry install zip.
+
+## 14.1.1
+
+- Tightened the side-tab layout and selected-tab editor header so the Adjust DC control, add button, visibility toggle, and delete button stay reachable without resizing the window.
+- Reduced the tab name/title field footprint and shortened the side tab column while preserving ellipsis for long tab names.
+- Refreshed release metadata and packaged the 14.1.1 Foundry install zip.
+
 ## 14.1.0
 
 - Moved Home and knowledge tabs from the horizontal header row into a sidebar layout.
@@ -233,37 +271,4 @@ All notable changes to Muerte's Simple Knowledge are collected here.
 ## Archive-Derived
 - Initial archived release line for Muerte's Simple Knowledge.
 - Supported PF2e knowledge checks where the GM configured encounters, posted chat buttons, and players received knowledge text without revealing hidden outcome data.
-## 14.1.1
-
-## Release
-- Tightened the side-tab layout and selected-tab editor header so the Adjust DC control, add button, visibility toggle, and delete button stay reachable without resizing the window.
-- Reduced the tab name/title field footprint and shortened the side tab column while preserving ellipsis for long tab names.
-- Refreshed release metadata and packaged the 14.1.1 Foundry install zip.
-## 14.1.2
-
-## Release
-- Added a collapse/expand toggle for the Tabs list so the Knowledge entries can move higher in the sidebar.
-- Strengthened the selected-tab header layout with shorter labels and hard-bounded Name, Title, and DC Adjust controls so tab actions stay reachable.
-- Archived the 14.1.1 package and refreshed release metadata plus the 14.1.2 Foundry install zip.
-## 14.1.3
-
-## Release
-- Shortened Knowledge sidebar labels by hiding skill/check prefixes such as "Religion:" and "Society, Performance, or Poetry Lore:" while preserving the full title in the row tooltip.
-- Narrowed the whole sidebar column and compacted Knowledge rows/actions so the main Knowledge editor has more room.
-- Updated all import JSON files to remove skill/check prefixes from Knowledge titles.
-- Archived the 14.1.2 package and refreshed release metadata plus the 14.1.3 Foundry install zip.
-## 14.1.4
-
-## Release
-- Locked the sidebar to a compact structural width so the whole left column shrinks, not just the tab/Knowledge buttons inside it.
-- Changed the workspace grid to use a content-sized navigation column and give the recovered space back to the Knowledge editor.
-- Tightened tab and Knowledge row stretching inside the compact sidebar so they no longer float in an oversized panel.
-- Archived the 14.1.3 package and refreshed release metadata plus the 14.1.4 Foundry install zip.
-## 14.1.5
-
-## Release
-- Restored Send to Chat to one public Simple Knowledge card instead of creating a duplicate private GM card.
-- Kept hidden DCs on the same public card as GM-only fragments, so players still do not see them unless DC hiding is disabled.
-- Kept GM result notes on the same result card as GM-only fragments instead of posting a second GM whisper card.
-- Refreshed release metadata and packaged the 14.1.5 Foundry install zip.
 

@@ -233,7 +233,6 @@
     minmax(110px, 150px) /* Skill/Save/Lore selector */
     48px                 /* DC */
     minmax(0, 1fr)       /* Description */
-    28px                 /* eye */
     34px;                /* + */
   gap: 3px;
   align-items: center;
@@ -262,8 +261,7 @@
 #msk-app .msk-checkBuilder .msk-checkLoreInput{ grid-column: 2; }
 #msk-app .msk-checkBuilder .msk-dcTiny{ grid-column: 3; }
 #msk-app .msk-checkBuilder input[data-role="msk-desc"]{ grid-column: 4; }
-#msk-app .msk-checkBuilder .msk-checkVisibilityToggle{ grid-column: 5; justify-self: center; }
-#msk-app .msk-checkBuilder .msk-addPlus{ grid-column: 6; justify-self: end; }
+#msk-app .msk-checkBuilder .msk-addPlus{ grid-column: 5; justify-self: end; }
 
 /* Force inputs/selects to fill their grid cells (override any base fixed widths) */
 #msk-app .msk-checkBuilder.msk-checkBuilder select,
