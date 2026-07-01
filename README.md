@@ -18,10 +18,6 @@ A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e 
 ## Release Notes
 This package is the 14.1.6 release. It restores Send to Chat and result posting to a single-card flow while keeping hidden DCs and GM result notes visible only to GM clients. Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
 
-## Testing Focus
-Use the included `GM-PLAYER-REGRESSION-CHECKLIST.md` before publishing or handing a build to testers.
-
-
 
 
 
