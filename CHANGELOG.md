@@ -4,8 +4,9 @@ All notable changes to Muerte's Simple Knowledge are collected here.
 
 ## 14.1.6
 
+- This package restores Send to Chat and result posting to a single-card flow while keeping hidden DCs and GM result notes visible only to GM clients.
+- Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
 - Refreshed release metadata and packaged the 14.1.6 Foundry install zip.
-- No module behavior changes were made in this release.
 
 ## 14.1.5
 
