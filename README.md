@@ -16,9 +16,17 @@ A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e 
 - Append-safe import that can add imported tabs alongside existing prep without overwriting current tabs
 
 ## Release Notes
-This package is the 14.1.6 release. It restores Send to Chat and result posting to a single-card flow while keeping hidden DCs and GM result notes visible only to GM clients. Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
+## 14.1.8
 
+- Improved player actor resolution for chat-card rolls: use the assigned default character first, then a selected owned token, then the player's only owned character.
+- Strengthened chat-card roll-button binding so normal sidebar chat works without needing to pop out the chat window.
+- Updated release metadata and packaged the 14.1.8 Foundry install zip.
 
+## 14.1.7
+
+- Kept GM-posted chat cards rollable for players even when the source tab or Knowledge entry is hidden from the app/sidebar.
+- Restored MSK result cards from player chat-card rolls to GM-only delivery, preventing critical failure false information from being exposed directly to players.
+- Updated release metadata and packaged the 14.1.7 Foundry install zip.
 
 
 
