@@ -13,19 +13,6 @@ function resolveCheckFromState(state, { tabId, encounterId, checkId }) {
   return { tab, enc, chk };
 }
 
-function canCurrentUserAccessCheck({ tab, enc, chk }) {
-  if (game.user.isGM) return true;
-
-  const blockTab = game.settings.get(MSK.ID, 'blockRollIfTabHidden');
-  const blockEnc = game.settings.get(MSK.ID, 'blockRollIfEncounterHidden');
-
-  if (blockTab && tab?.tabSettings?.showToPlayers === false) return false;
-  if (blockEnc && enc?.encounterSettings?.showToPlayers === false) return false;
-  if (chk?.checkSettings?.showToPlayers === false) return false;
-
-  return true;
-}
-
 export async function handleChatCardRollClick(event) {
   const btn = event.target?.closest?.('.msk-roll-btn');
   if (!btn) return;
@@ -53,14 +40,13 @@ export async function handleChatCardRollClick(event) {
     return;
   }
 
-  if (!canCurrentUserAccessCheck({ tab, enc, chk })) {
-    warnUnavailable();
-    return;
-  }
+  // A GM-posted chat card is an explicit invitation to roll the buttons that
+  // were rendered on it. Hidden tab/encounter settings still affect the app,
+  // but they should not invalidate an already-posted public card.
 
   const actor = resolveActorForUser(game.user);
   if (!actor) {
-    ui.notifications.warn(`${MSK.ABBR}: No character assigned or controlled.`);
+    ui.notifications.warn(`${MSK.ABBR}: No default character, selected owned token, or single owned character found.`);
     return;
   }
 

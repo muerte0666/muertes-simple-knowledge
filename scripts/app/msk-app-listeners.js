@@ -391,7 +391,7 @@ export function activateMSKAppListeners(html) {
 
     const actor = resolveActorForUser(game.user);
     if (!actor) {
-      ui.notifications.warn(`${MSK.ABBR}: No character assigned or controlled.`);
+      ui.notifications.warn(`${MSK.ABBR}: No default character, selected owned token, or single owned character found.`);
       return;
     }
 

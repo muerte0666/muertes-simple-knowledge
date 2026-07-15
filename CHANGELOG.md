@@ -2,6 +2,18 @@
 
 All notable changes to Muerte's Simple Knowledge are collected here.
 
+## 14.1.8
+
+- Improved player actor resolution for chat-card rolls: use the assigned default character first, then a selected owned token, then the player's only owned character.
+- Strengthened chat-card roll-button binding so normal sidebar chat works without needing to pop out the chat window.
+- Updated release metadata and packaged the 14.1.8 Foundry install zip.
+
+## 14.1.7
+
+- Kept GM-posted chat cards rollable for players even when the source tab or Knowledge entry is hidden from the app/sidebar.
+- Restored MSK result cards from player chat-card rolls to GM-only delivery, preventing critical failure false information from being exposed directly to players.
+- Updated release metadata and packaged the 14.1.7 Foundry install zip.
+
 ## 14.1.6
 
 - This package restores Send to Chat and result posting to a single-card flow while keeping hidden DCs and GM result notes visible only to GM clients.

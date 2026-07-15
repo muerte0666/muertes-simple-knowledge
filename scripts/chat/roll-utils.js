@@ -3,13 +3,31 @@ import { MSK } from '../utils/constants.js';
 
 import { hexToRgba } from '../utils/color.js';
 export function resolveActorForUser(user) {
-  // 1) assigned character
-  if (user.character) return user.character;
+  if (!user) return null;
 
-  // 2) exactly one controlled token with owned actor
+  // 1) assigned/default character. Foundry versions expose this as either an
+  // Actor document or an id on the user source data.
+  const assigned = user.character;
+  if (assigned?.uuid || assigned?.id) return assigned;
+
+  const assignedId = assigned?.id ?? assigned ?? user._source?.character ?? user.characterId;
+  if (assignedId) {
+    const actor = game.actors?.get?.(assignedId);
+    if (actor?.isOwner) return actor;
+  }
+
+  // 2) exactly one controlled token with owned actor.
   const tokens = canvas?.tokens?.controlled ?? [];
   const owned = tokens.map(t => t.actor).filter(a => a && a.isOwner);
   if (owned.length === 1) return owned[0];
+
+  // 3) no token selected: if the player owns exactly one character actor, use it.
+  const ownedCharacters = game.actors?.filter?.(actor => {
+    if (!actor?.isOwner) return false;
+    const type = String(actor.type ?? '').toLowerCase();
+    return type === 'character' || type === 'pc' || type === 'player';
+  }) ?? [];
+  if (ownedCharacters.length === 1) return ownedCharacters[0];
 
   return null;
 }
@@ -245,7 +263,11 @@ export async function runKnowledgeCheck({ state, tab, enc, chk, actor, source })
   // Enrich result HTML
   const enriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(resultHtml ?? '', { async: true });
 
-  const { whisper } = getRecipients(responseVisibility, game.user.id);
+  // Player-facing chat-card buttons should never reveal MSK outcome text directly.
+  // Critical failures can contain false information, so the GM gets the result
+  // card and decides what to narrate.
+  const effectiveResponseVisibility = source === 'chat-card' ? 'gm-only' : responseVisibility;
+  const { whisper } = getRecipients(effectiveResponseVisibility, game.user.id);
   const gmNote = gmNoteHtml
     ? await foundry.applications.ux.TextEditor.implementation.enrichHTML(gmNoteHtml, { async: true })
     : null;
