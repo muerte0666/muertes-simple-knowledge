@@ -2,6 +2,14 @@
 
 All notable changes to Muerte's Simple Knowledge are collected here.
 
+## 14.1.9
+
+- Removed the Home discount pill and referral link.
+- Added installed-module version pills to encounter and result chat cards, with matching rounded styling and narrow-panel title wrapping.
+- Prevented overlapping rolls from rapid repeat clicks and restored button availability after completion or errors.
+- Natural-1/20 adjustments now use an active, non-discarded d20 result.
+- Refreshed release metadata and packaged 14.1.9.
+
 ## 14.1.8
 
 - Improved player actor resolution for chat-card rolls: use the assigned default character first, then a selected owned token, then the player's only owned character.

@@ -74,7 +74,7 @@ function extractD20(roll) {
     // Find first d20 term
     const die = roll.terms.find(t => t instanceof Die && t.faces === 20);
     if (!die) return null;
-    const first = die.results?.[0]?.result;
+    const first = die.results?.find(result => result.active !== false && !result.discarded)?.result;
     if (typeof first !== 'number') return null;
     return first;
   } catch {
@@ -104,6 +104,8 @@ function getRecipients(responseVisibility, rollerUserId) {
 async function renderResponseCard({ header, body, gmNote = null }) {
   const _renderTemplate = foundry?.applications?.handlebars?.renderTemplate ?? globalThis.renderTemplate;
   return _renderTemplate(`modules/${MSK.ID}/templates/chat/response-card.hbs`, {
+    moduleName: MSK.NAME,
+    moduleVersion: game.modules.get(MSK.ID)?.version ?? 'unknown',
     header,
     body,
     gmNote,

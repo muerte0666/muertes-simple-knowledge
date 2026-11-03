@@ -656,11 +656,13 @@ body:not(.msk-user-is-gm) .gm-only {
   gap:8px;
   margin-bottom:6px;
 }
-.msk-chat-card .msk-badge{
+.msk-chat-card .msk-badge,
+.msk-result-card .msk-badge{
   font-weight:800;
   font-size:11px;
   padding:1px 6px;
-  border-radius:6px;
+  border-radius:999px;
+  flex-shrink:0;
   background: rgba(0,0,0,.12);
   white-space: nowrap;
 }
@@ -1113,3 +1115,9 @@ body:not(.msk-user-is-gm) .gm-only {
   width: 100%;
   max-width: 100%;
 }
+
+/* Keep version pills and long titles readable in narrow chat panels. */
+.msk-chat-card .msk-chat-header,
+.msk-result-card .msk-result-header{flex-wrap:wrap;}
+.msk-chat-card .msk-chat-title,
+.msk-result-card .msk-result-title{min-width:0;overflow-wrap:anywhere;flex:1 1 140px;}

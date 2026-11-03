@@ -84,6 +84,7 @@ export async function sendEncounterToChat(html) {
   const content = await _renderTemplate(`modules/${MSK.ID}/templates/chat/encounter-card.hbs`, {
     contractV: MSK.CONTRACT_V,
     moduleName: MSK.NAME,
+    moduleVersion: game.modules.get(MSK.ID)?.version ?? 'unknown',
     title: enc.title,
     description: desc,
     includeDescription,

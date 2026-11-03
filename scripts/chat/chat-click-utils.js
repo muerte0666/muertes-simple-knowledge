@@ -20,37 +20,46 @@ export async function handleChatCardRollClick(event) {
   event.preventDefault();
   event.stopPropagation();
 
-  const v = Number(btn.dataset.mskV ?? 0);
-  if (v !== MSK.CONTRACT_V) {
-    ui.notifications.warn(`${MSK.ABBR}: This card is from an unsupported version.`);
-    return;
+  if (btn.disabled) return;
+  btn.disabled = true;
+  try {
+    const v = Number(btn.dataset.mskV ?? 0);
+    if (v !== MSK.CONTRACT_V) {
+      ui.notifications.warn(`${MSK.ABBR}: This card is from an unsupported version.`);
+      return;
+    }
+
+    const ids = {
+      tabId: btn.dataset.mskTabId,
+      encounterId: btn.dataset.mskEncounterId,
+      checkId: btn.dataset.mskCheckId
+    };
+
+    const state = await getWorldState();
+    const { tab, enc, chk } = resolveCheckFromState(state, ids);
+
+    if (!tab || !enc || !chk) {
+      warnUnavailable();
+      return;
+    }
+
+    // A GM-posted chat card is an explicit invitation to roll the buttons that
+    // were rendered on it. Hidden tab/encounter settings still affect the app,
+    // but they should not invalidate an already-posted public card.
+
+    const actor = resolveActorForUser(game.user);
+    if (!actor) {
+      ui.notifications.warn(`${MSK.ABBR}: No default character, selected owned token, or single owned character found.`);
+      return;
+    }
+
+    await runKnowledgeCheck({ state, tab, enc, chk, actor, source: 'chat-card' });
+  } catch (err) {
+    console.error(`${MSK.ABBR}: Chat-card roll failed`, err);
+    ui.notifications.error(`${MSK.ABBR}: Check failed (see console).`);
+  } finally {
+    btn.disabled = false;
   }
-
-  const ids = {
-    tabId: btn.dataset.mskTabId,
-    encounterId: btn.dataset.mskEncounterId,
-    checkId: btn.dataset.mskCheckId
-  };
-
-  const state = await getWorldState();
-  const { tab, enc, chk } = resolveCheckFromState(state, ids);
-
-  if (!tab || !enc || !chk) {
-    warnUnavailable();
-    return;
-  }
-
-  // A GM-posted chat card is an explicit invitation to roll the buttons that
-  // were rendered on it. Hidden tab/encounter settings still affect the app,
-  // but they should not invalidate an already-posted public card.
-
-  const actor = resolveActorForUser(game.user);
-  if (!actor) {
-    ui.notifications.warn(`${MSK.ABBR}: No default character, selected owned token, or single owned character found.`);
-    return;
-  }
-
-  await runKnowledgeCheck({ state, tab, enc, chk, actor, source: 'chat-card' });
 }
 
 export function bindChatCardRollHandler(element) {
