@@ -15,17 +15,6 @@ A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e 
 - JSON import/export for individual tabs or full data sets, with pasted JSON or loaded `.json` files
 - Append-safe import that can add imported tabs alongside existing prep without overwriting current tabs
 
-## Release Notes
-This package is the 14.1.9 release. Removed the Home tab’s $10 discount pill and referral link. Encounter and result chat cards now show a matching MSK version pill using the installed module version. Rapid repeat clicks are blocked while a check is pending, and natural-1/20 detection ignores discarded die results. Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
-
-## Testing Focus
-Use the included `GM-PLAYER-REGRESSION-CHECKLIST.md` before publishing or handing a build to testers.
-
-
-
-
-
-
 
 
 
