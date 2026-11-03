@@ -15,12 +15,6 @@ A streamlined knowledge encounter framework for Pathfinder 2e and Starfinder 2e 
 - JSON import/export for individual tabs or full data sets, with pasted JSON or loaded `.json` files
 - Append-safe import that can add imported tabs alongside existing prep without overwriting current tabs
 
-## Release Notes
-This package is the 14.1.8 release. It lets players roll GM-posted chat-card checks from their assigned default character, a selected owned token, or their only owned character, and it strengthens normal chat sidebar click handling so pop-out chat is not required. Foundry VTT 13 remains the minimum supported version and Foundry VTT 14 is verified.
-
-## Testing Focus
-Use the included `GM-PLAYER-REGRESSION-CHECKLIST.md` before publishing or handing a build to testers.
-
 
 
 
